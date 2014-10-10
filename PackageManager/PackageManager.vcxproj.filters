@@ -22,21 +22,107 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{e52f67b2-42d4-49ac-b9b3-2fad9044a9f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\include\utils">
+      <UniqueIdentifier>{c2797254-6465-4476-a876-ebe8628c1193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\utils">
+      <UniqueIdentifier>{2ab81ce2-b21c-41f8-80f7-67a2f7f2391d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\Commands">
+      <UniqueIdentifier>{d025bf30-b460-4913-8f4a-d8ba6b2b2356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\Commands">
+      <UniqueIdentifier>{2f8dbf75-5678-403b-b0d5-19ed729ba421}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\EntryPoint\Source.cpp">
-      <Filter>Source Files\source\EntryPoint</Filter>
-    </ClCompile>
     <ClCompile Include="source\Path.cpp">
       <Filter>Source Files\source</Filter>
     </ClCompile>
+    <ClCompile Include="source\utils\Strings.cpp">
+      <Filter>Source Files\source\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Profile.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Settings.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EntryPoint\main.cpp">
+      <Filter>Source Files\source\EntryPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CommandDispatcher.cpp">
+      <Filter>Source Files\source\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CommandFactory.cpp">
+      <Filter>Source Files\source\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CommandHelp.cpp">
+      <Filter>Source Files\source\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CommandUpdate.cpp">
+      <Filter>Source Files\source\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utils\FileDownloader.cpp">
+      <Filter>Source Files\source\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utils\tinyxml2.cpp">
+      <Filter>Source Files\source\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SettingsManager.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utils\FormattedPrint.cpp">
+      <Filter>Source Files\source\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Path.h">
+    <ClInclude Include="include\Convert.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Settings.h">
+    <ClInclude Include="include\Path.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Settings.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\Strings.hpp">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Profile.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommandDispatcher.hpp">
+      <Filter>Header Files\include\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommandFactory.hpp">
+      <Filter>Header Files\include\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommandHelp.hpp">
+      <Filter>Header Files\include\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommandUpdate.hpp">
+      <Filter>Header Files\include\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ICommand.hpp">
+      <Filter>Header Files\include\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\FileDownloader.hpp">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\tinyxml2.h">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SettingsManager.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\FormattedPrint.hpp">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

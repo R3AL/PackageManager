@@ -18,13 +18,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -66,12 +66,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\EntryPoint\Source.cpp" />
+    <ClCompile Include="source\CommandDispatcher.cpp" />
+    <ClCompile Include="source\CommandFactory.cpp" />
+    <ClCompile Include="source\CommandHelp.cpp" />
+    <ClCompile Include="source\CommandUpdate.cpp" />
+    <ClCompile Include="source\EntryPoint\main.cpp" />
     <ClCompile Include="source\Path.cpp" />
+    <ClCompile Include="source\Profile.cpp" />
+    <ClCompile Include="source\Settings.cpp" />
+    <ClCompile Include="source\SettingsManager.cpp" />
+    <ClCompile Include="source\utils\FileDownloader.cpp" />
+    <ClCompile Include="source\utils\FormattedPrint.cpp" />
+    <ClCompile Include="source\utils\Strings.cpp" />
+    <ClCompile Include="source\utils\tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Path.h" />
-    <ClInclude Include="include\Settings.h" />
+    <ClInclude Include="include\CommandDispatcher.hpp" />
+    <ClInclude Include="include\CommandFactory.hpp" />
+    <ClInclude Include="include\CommandHelp.hpp" />
+    <ClInclude Include="include\CommandUpdate.hpp" />
+    <ClInclude Include="include\Convert.hpp" />
+    <ClInclude Include="include\ICommand.hpp" />
+    <ClInclude Include="include\Path.hpp" />
+    <ClInclude Include="include\Profile.hpp" />
+    <ClInclude Include="include\Settings.hpp" />
+    <ClInclude Include="include\SettingsManager.hpp" />
+    <ClInclude Include="include\utils\FileDownloader.hpp" />
+    <ClInclude Include="include\utils\FormattedPrint.hpp" />
+    <ClInclude Include="include\utils\Strings.hpp" />
+    <ClInclude Include="include\utils\tinyxml2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

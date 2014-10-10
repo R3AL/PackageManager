@@ -1,0 +1,4 @@
+- Load/Save settings in Profile class
+- Add xml parser/reader/writer/etc
+- Read settings file in Global class
+- isFolder/isFile implementation for Path class (os dependent)

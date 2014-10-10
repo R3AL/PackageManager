@@ -1,58 +1,41 @@
-#include "Path.h"
+#include "Path.hpp"
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 
+#include "utils/Strings.hpp"
+
 using namespace std;
 
-static std::vector<std::string> split(const std::string &s, char delim) 
+
+Path::Path()
 {
-    std::vector<std::string> elems;
 
-	std::stringstream ss(s);
-    std::string item;
-
-    while( std::getline(ss, item, delim) ) 
-	{
-        elems.push_back(item);
-    }
-
-    return elems;
 }
 
 Path::Path( const std::string& path )
 {
 	m_folders.reserve( 10 );
 
-	auto pathCopy = path;
-
-	transform(	pathCopy.begin(),
-				pathCopy.end(),
-				pathCopy.begin(),
-				[]( char ch )
-				{
-					if( ch == '\\' )
-						return '/';
-
-					return ch;
-				});
-
-
-	m_folders = split( pathCopy, '/' );
+	m_folders =	utils::Strings::Keep( path ).replace( '\\', '/' ).split( '/' );
 }
 
 void Path::up( unsigned levels )
 {
-	for(	auto i = m_folders.size() - 1; 
-			levels != 0; 
-			--levels, --i )
+	std::size_t index;
+
+	for(index = m_folders.size() - 1; 
+		levels != 0; 
+		--levels, --index )
 	{
-		m_folders[ i ].clear();
+		m_folders[ index ].clear();
 	}
+
+	m_folders.resize( index + 1 );
 }
 
-string Path::toString() const
+Path::operator string() const
 {
 	string path;
 
@@ -72,10 +55,22 @@ string Path::toString() const
 	return path;
 }
 
-void Path::print()
+void Path::cd( const std::string& folder )
 {
-	for( auto i : m_folders )
-	{
-		cout << i << endl;
-	}
+	m_folders.push_back( folder );
+}
+
+bool Path::isFolder() const
+{
+	return true;
+}
+
+bool Path::isFile() const
+{
+	return false;
+}
+
+bool Path::isEmpty() const
+{
+	return m_folders.empty();
 }
