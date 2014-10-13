@@ -8,6 +8,8 @@
 	#pragma comment(lib, "Urlmon.lib")
 #endif
 
+
+
 auto FileDownloader::download(	const std::string& url,
 								const std::string& fileName ) -> bool
 {
@@ -16,6 +18,7 @@ auto FileDownloader::download(	const std::string& url,
 	#ifdef _WIN32
 		class DownloadStatusCallback : public IBindStatusCallback
 		{
+			int count;
 		public:
 			HRESULT _stdcall OnStartBinding( DWORD, IBinding* )						{ return E_NOTIMPL; }
 			HRESULT _stdcall GetPriority( LONG* )									{ return E_NOTIMPL; }
@@ -28,12 +31,17 @@ auto FileDownloader::download(	const std::string& url,
 			ULONG _stdcall AddRef()													{ return 0;	}
 			ULONG _stdcall Release()												{ return 0; }
 
+			DownloadStatusCallback()
+			{
+				count = 0;
+			}
+
 			HRESULT _stdcall OnProgress(ULONG	ulProgress,
 										ULONG	ulProgressMax,
 										ULONG	ulStatusCode,
 										LPCWSTR szStatusText)
 			{
-				FormattedPrint::On(std::cout, false).app(".");
+				
 
 				return S_OK;
 			}

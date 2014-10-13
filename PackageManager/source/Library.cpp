@@ -3,6 +3,11 @@
 #include <initializer_list>
 #include <vector>
 #include <iostream>
+#include <thread>
+#include <atomic>
+#include <numeric>
+#include <iomanip>
+#include <sstream>
 
 #include "utils/Strings.hpp"
 #include "utils/FormattedPrint.hpp"
@@ -196,6 +201,24 @@ auto Library::download() const -> bool
 	}
 }
 
+void progressbar()
+{
+	static int x = 0;
+	char slash[4];
+	
+	slash[0] = '\\';
+	slash[1] = '-';
+	slash[2] = '/';
+	slash[3] = '|';
+
+	std::cout << "\b\b\b \b[" << slash[ x++ ] << "]";
+	
+	if( x == 4 )
+	{
+		x = 0;
+	}
+}
+
 auto Library::install()	const -> void
 {
 	using namespace utils;
@@ -205,14 +228,32 @@ auto Library::install()	const -> void
 		std::string command = "external\\bin\\7za x temp." + extensionStringFromUrl() + " > nul";
 
 		FormattedPrint::On(std::cout)	.app("Installing ")
-										.color( White )`
+										.color( White )
 										.app( name() )
+										.app(' ')
 										.color();
 
+		std::atomic_bool condition;
+		condition.store( true );
+
+		auto progressThread = std::thread(	[&condition]
+											{
+												while( condition.load() )
+												{
+													progressbar();
+
+													std::this_thread::sleep_for( std::chrono::milliseconds(100) );
+												}
+
+												std::cout << "\b ";
+											});
 		system( command.c_str() );
 
+		condition.store( false );
+		progressThread.join();
+
 		FormattedPrint::On(std::cout, false).color( Green )
-											.app(" Done")
+											.app("Done")
 											.color()
 											.endl();
 	}
