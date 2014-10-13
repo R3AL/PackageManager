@@ -27,10 +27,10 @@ struct Settings
 
 	struct Global
 	{
-		static const std::string SETTINGS_FILE;
-		static const std::string LIBRARY_LIST_FILE;
-		static const std::string LIBRARY_LIST_URL;
-		static const std::string PROFILES_FOLDER_NAME;
+		static const char* const SETTINGS_FILE;
+		static const char* const LIBRARY_LIST_FILE;
+		static const char* const LIBRARY_LIST_URL;
+		static const char* const PROFILES_FOLDER_NAME;
 		
 
 		// complete path to the profiles folder

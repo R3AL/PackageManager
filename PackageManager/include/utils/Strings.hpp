@@ -21,7 +21,6 @@ namespace utils
 		static auto toLower(const std::string& str)					-> std::string;
 		static auto toUpper(const std::string& str)					-> std::string;
 
-	public:
 		class mutableStringProxy
 		{
 		public:
@@ -32,9 +31,17 @@ namespace utils
 			auto tolower()													-> mutableStringProxy;
 			auto toupper()													-> mutableStringProxy;
 			auto split( const char& delimiter )						const	-> std::vector< std::string >;
+			auto contains( const std::string& what )				const	-> bool;
+			auto operator==( const mutableStringProxy& )			const	-> bool;
+			auto operator!=( const mutableStringProxy& )			const	-> bool;
 
 			mutableStringProxy( std::string& str );
 
+			/*
+			 *	This method is useful when passing in strings to STL algorithms
+			 *	to disambiguate which comparison operator is to be used
+			 */
+			auto str()												const	-> std::string;
 			operator std::string&() const;
 
 		private:
@@ -52,7 +59,15 @@ namespace utils
 			auto tolower()											const -> immutableStringProxy;
 			auto toupper()											const -> immutableStringProxy;
 			auto split( const char& delimiter )						const -> std::vector< std::string >;
+			auto contains( const std::string& what )				const -> bool;
+			auto operator==( const immutableStringProxy& )			const -> bool;
+			auto operator!=( const immutableStringProxy& )			const -> bool;
 
+			/*
+			 *	This method is useful when passing in strings to STL algorithms
+			 *	to disambiguate which comparison operator is to be used
+			 */
+			auto str()												const	-> std::string;
 			operator std::string() const;
 
 			immutableStringProxy( const std::string& str );
@@ -61,7 +76,10 @@ namespace utils
 			std::string m_str;
 		};
 
+		friend std::ostream& operator<<( std::ostream&, const Strings::mutableStringProxy& );
+		friend std::ostream& operator<<( std::ostream&, const Strings::immutableStringProxy& );
 
+	public:
 		/*
 			all operations will be performed on the input string
 		*/

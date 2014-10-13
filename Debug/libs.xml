@@ -1,0 +1,10 @@
+<libraries>
+	<lib name="boost" url="http://netcologne.dl.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.bz2"/>
+	<lib name="BOOSTV2" url="some url"/>
+	<lib name="BOOSTV3" url="some url"/>
+	<lib name="BooSTV4" url="some url"/>
+	<lib name="BOOSTV2_6" url="some url"/>
+	<lib name="QT" url="some url"/>
+	<lib name="other crap" url="some url"/>
+	<lib name="cool stuff" url="some url"/>
+</libraries>

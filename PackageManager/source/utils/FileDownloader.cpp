@@ -1,4 +1,5 @@
 #include "utils/FileDownloader.hpp"
+#include "utils/FormattedPrint.hpp"
 
 #include <iostream>
 
@@ -10,8 +11,9 @@
 auto FileDownloader::download(	const std::string& url,
 								const std::string& fileName ) -> bool
 {
+	using namespace utils;
+
 	#ifdef _WIN32
-		
 		class DownloadStatusCallback : public IBindStatusCallback
 		{
 		public:
@@ -31,7 +33,8 @@ auto FileDownloader::download(	const std::string& url,
 										ULONG	ulStatusCode,
 										LPCWSTR szStatusText)
 			{
-				//std::cout << ulProgress << "\n";
+				FormattedPrint::On(std::cout, false).app(".");
+
 				return S_OK;
 			}
 		};
@@ -43,7 +46,7 @@ auto FileDownloader::download(	const std::string& url,
 										fileName.data(),
 										0,
 										&statusCallback );
-		
+
 		return rval == S_OK;
 	#endif
 }

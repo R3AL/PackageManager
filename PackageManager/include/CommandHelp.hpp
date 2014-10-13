@@ -4,7 +4,6 @@
 #include <string>
 
 #include "ICommand.hpp"
-#include "CommandFactory.hpp"
 
 class CommandHelp : public ICommand
 {

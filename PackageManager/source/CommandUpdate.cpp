@@ -5,6 +5,8 @@
 
 #include "SettingsManager.hpp"
 
+#include "CommandFactory.hpp"
+
 #include <iostream>
 
 const std::string CommandUpdate::command = "update";
@@ -17,24 +19,31 @@ CommandUpdate::CommandUpdate()
 bool CommandUpdate::run( const std::vector< std::string >& programArguments ) const
 {
 	using namespace utils;
-	//FormattedPrint::cout("Updating library list", true);
 
-	FormattedPrint::On( std::cout ).app("Updating library list");
+	FormattedPrint::On( std::cout )	.app("Updating library list")
+									.endl();
 
-
-	auto success = FileDownloader::download(SettingsManager::instance().global().LIBRARY_LIST_URL,
-											SettingsManager::instance().global().LIBRARY_LIST_FILE);
-
-	if( success )
+	auto isSuccess = FileDownloader::download(	SettingsManager::instance().global().LIBRARY_LIST_URL,
+												SettingsManager::instance().global().LIBRARY_LIST_FILE);
+	
+	if( isSuccess )
 	{
-		FormattedPrint::cout("Update complete", true);
+		FormattedPrint::On(std::cout)	.app("Update")
+										.color( Green )
+										.app(" complete")
+										.color()
+										.endl();
 	}
 	else
 	{
-		FormattedPrint::cout("Update FAILED", true);
+		FormattedPrint::On( std::cout )	.app("Update")
+										.color( Red )
+										.app(" failed")
+										.color()
+										.endl();
 	}
 
-	return success;
+	return isSuccess;
 }
 
 REGISTER_COMMAND( CommandUpdate );

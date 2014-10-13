@@ -114,6 +114,21 @@ namespace utils
 		return m_str;
 	}
 
+	auto Strings::mutableStringProxy::str() const -> std::string
+	{
+		return m_str;
+	}
+
+	auto Strings::mutableStringProxy::operator==( const mutableStringProxy& other ) const -> bool
+	{
+		return m_str == other.m_str;
+	}
+
+	auto Strings::mutableStringProxy::operator!=( const mutableStringProxy& other ) const -> bool
+	{
+		return m_str != other.m_str;
+	}
+
 	auto operator<<(std::ostream& os, 
 					const Strings::mutableStringProxy& mutableStringProxy ) -> std::ostream&
 	{
@@ -161,6 +176,10 @@ namespace utils
 		return Strings::split( m_str, delimiter );
 	}
 
+	auto Strings::mutableStringProxy::contains( const std::string& what ) const -> bool
+	{
+		return m_str.find( what ) != std::string::npos;
+	}
 
 
 
@@ -180,6 +199,21 @@ namespace utils
 	Strings::immutableStringProxy::operator std::string() const
 	{
 		return m_str;
+	}
+
+	auto Strings::immutableStringProxy::str() const -> std::string
+	{
+		return m_str;
+	}
+
+	auto Strings::immutableStringProxy::operator==( const immutableStringProxy& other ) const -> bool
+	{
+		return m_str == other.m_str;
+	}
+
+	auto Strings::immutableStringProxy::operator!=( const immutableStringProxy& other ) const -> bool
+	{
+		return m_str != other.m_str;
 	}
 
 	auto operator<<(std::ostream& os, 
@@ -219,5 +253,10 @@ namespace utils
 	auto Strings::immutableStringProxy::split( const char& delimiter ) const -> std::vector< std::string >
 	{
 		return Strings::split( m_str, delimiter );
+	}
+
+	auto Strings::immutableStringProxy::contains( const std::string& what ) const -> bool
+	{
+		return m_str.find( what ) != std::string::npos;
 	}
 }

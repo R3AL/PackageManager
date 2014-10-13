@@ -75,6 +75,15 @@
     <ClCompile Include="source\utils\FormattedPrint.cpp">
       <Filter>Source Files\source\utils</Filter>
     </ClCompile>
+    <ClCompile Include="source\CommandInstall.cpp">
+      <Filter>Source Files\source\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LibraryManager.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Library.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Convert.hpp">
@@ -118,6 +127,15 @@
     </ClInclude>
     <ClInclude Include="include\utils\FormattedPrint.hpp">
       <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommandInstall.hpp">
+      <Filter>Header Files\include\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LibraryManager.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Library.hpp">
+      <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
