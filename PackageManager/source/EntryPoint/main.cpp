@@ -33,5 +33,5 @@ int main( int argc, char** argv )
 	*/
 
 	//FileDownloader::download( "https://github.com/R3AL/test/raw/master/node/node.exe", "node.exe" );
-	std::cin.get();
+	//std::cin.get();
 }

@@ -2,3 +2,4 @@
 *.lastbuildstate
 *.log
 *.obj
+Debug/external/bin/boost_1_56_0.tar.bz2

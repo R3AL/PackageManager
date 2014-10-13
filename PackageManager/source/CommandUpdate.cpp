@@ -2,6 +2,7 @@
 
 #include "utils/FormattedPrint.hpp"
 #include "utils/FileDownloader.hpp"
+#include "utils/TaskProgressIndicator.hpp"
 
 #include "SettingsManager.hpp"
 
@@ -20,27 +21,27 @@ bool CommandUpdate::run( const std::vector< std::string >& programArguments ) co
 {
 	using namespace utils;
 
-	FormattedPrint::On( std::cout )	.app("Updating library list")
-									.endl();
+	FormattedPrint::On( std::cout )	.app("Updating library list");
 
-	auto isSuccess = FileDownloader::download(	SettingsManager::instance().global().LIBRARY_LIST_URL,
-												SettingsManager::instance().global().LIBRARY_LIST_FILE);
+	bool isSuccess = ProgressIndicator::Task(	[&]
+												{ 
+													return FileDownloader::download(SettingsManager::instance().global().LIBRARY_LIST_URL,
+																					SettingsManager::instance().global().LIBRARY_LIST_FILE); 
+												} );
 	
 	if( isSuccess )
 	{
-		FormattedPrint::On(std::cout)	.app("Update")
-										.color( Green )
-										.app(" complete")
-										.color()
-										.endl();
+		FormattedPrint::On(std::cout, false).color( Green )
+											.app("Done")
+											.color()
+											.endl();
 	}
 	else
 	{
-		FormattedPrint::On( std::cout )	.app("Update")
-										.color( Red )
-										.app(" failed")
-										.color()
-										.endl();
+		FormattedPrint::On(std::cout, false).color( Red )
+											.app("Failed")
+											.color()
+											.endl();
 	}
 
 	return isSuccess;

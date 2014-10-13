@@ -32,8 +32,8 @@ bool CommandInstall::run( const std::vector< std::string >& programArguments ) c
 		return false;
 	}
 
-	std::vector< std::string > notInstalledLibs;
-	std::vector< Library > libsToInstall;
+	std::vector< std::string >	notInstalledLibs;
+	std::vector< Library >		libsToInstall;
 
 	for( const auto& argumentLib : programArguments )
 	{
@@ -81,9 +81,38 @@ bool CommandInstall::run( const std::vector< std::string >& programArguments ) c
 		}
 	}
 
+	std::vector< std::string > installedLibs;
+
+	for( auto& lib : libsToInstall )
+	{
+		if( lib.install() )
+		{
+			installedLibs.push_back( lib.name() );
+		}
+		else
+		{
+			notInstalledLibs.push_back( lib.name() );
+		}
+	}
+
+	if( ! installedLibs.empty() )
+	{
+		FormattedPrint::On(std::cout)	.app("The follow libraries were installed:")
+										.endl();
+
+		for( const auto& libName : installedLibs )
+		{
+			FormattedPrint::On(std::cout)	.app("\t")
+											.color( Green )
+											.app( libName )
+											.color()
+											.endl();
+		}
+	}
+
 	if( ! notInstalledLibs.empty() )
 	{
-		FormattedPrint::On(std::cout)	.app("The follow libraries were NOT installed:")
+		FormattedPrint::On(std::cout)	.app("The follow libraries were notrtr5` installed:")
 										.endl();
 
 		for( const auto& lib : notInstalledLibs )
@@ -94,22 +123,6 @@ bool CommandInstall::run( const std::vector< std::string >& programArguments ) c
 											.color()
 											.endl();
 		}
-	}
-
-	// TODO: actually install the damn libs
-
-	FormattedPrint::On(std::cout)	.app("The follow libraries were installed:")
-									.endl();
-
-	for( auto& lib : libsToInstall )
-	{
-		FormattedPrint::On(std::cout)	.app("\t")
-										.color( Green )
-										.app( lib.name() )
-										.color()
-										.endl();
-
-		lib.install();
 	}
 
 	return true;

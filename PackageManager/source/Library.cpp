@@ -12,6 +12,7 @@
 #include "utils/Strings.hpp"
 #include "utils/FormattedPrint.hpp"
 #include "utils/FileDownloader.hpp"
+#include "utils/TaskProgressIndicator.hpp"
 
 const std::string Library::extensions[] =
 {
@@ -180,15 +181,18 @@ auto Library::download() const -> bool
 									.app( name() )
 									.color();
 
-	if( FileDownloader::download(	url(), 
-									"temp." + extensionStringFromUrl() ) )
+	bool downloadDone = ProgressIndicator::Task([&]
+												{
+													return FileDownloader::download(url(), 
+																					"temp." + extensionStringFromUrl() );
+												} );
+
+	if( downloadDone )
 	{
 		FormattedPrint::On(std::cout, false).color( Green )
 											.app(" Done")
 											.color()
 											.endl();
-
-		return true;
 	}
 	else
 	{
@@ -196,30 +200,12 @@ auto Library::download() const -> bool
 											.app(" Failed")
 											.color()
 											.endl();
-
-		return false;
 	}
+
+	return downloadDone;
 }
 
-void progressbar()
-{
-	static int x = 0;
-	char slash[4];
-	
-	slash[0] = '\\';
-	slash[1] = '-';
-	slash[2] = '/';
-	slash[3] = '|';
-
-	std::cout << "\b\b\b \b[" << slash[ x++ ] << "]";
-	
-	if( x == 4 )
-	{
-		x = 0;
-	}
-}
-
-auto Library::install()	const -> void
+auto Library::install()	const -> bool
 {
 	using namespace utils;
 
@@ -230,31 +216,22 @@ auto Library::install()	const -> void
 		FormattedPrint::On(std::cout)	.app("Installing ")
 										.color( White )
 										.app( name() )
-										.app(' ')
 										.color();
 
-		std::atomic_bool condition;
-		condition.store( true );
-
-		auto progressThread = std::thread(	[&condition]
-											{
-												while( condition.load() )
-												{
-													progressbar();
-
-													std::this_thread::sleep_for( std::chrono::milliseconds(100) );
-												}
-
-												std::cout << "\b ";
-											});
-		system( command.c_str() );
-
-		condition.store( false );
-		progressThread.join();
+		ProgressIndicator::Task([&command]
+								{ 
+									system( command.c_str() ); 
+								} );
 
 		FormattedPrint::On(std::cout, false).color( Green )
 											.app("Done")
 											.color()
 											.endl();
+
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }

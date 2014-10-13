@@ -137,6 +137,9 @@
     <ClInclude Include="include\Library.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\utils\ProgressIndicator.hpp">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">

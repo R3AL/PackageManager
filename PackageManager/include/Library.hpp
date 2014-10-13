@@ -34,7 +34,7 @@ public:
 	auto type()		const -> FileType;
 	auto archType() const -> ArchiveType;
 	auto isValid()	const -> bool;
-	auto install()	const -> void;
+	auto install()	const -> bool;
 
 private:
 	auto identifyType()											-> void;
