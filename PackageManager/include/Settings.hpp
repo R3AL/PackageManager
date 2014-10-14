@@ -4,16 +4,19 @@
 
 #include "Path.hpp"
 
+enum class Compiler
+{
+	MSVC,
+	GCC,
+	CLANG,
+	ICC
+};
+
 struct Settings
 {
-	enum class Compiler
-	{
-		MSVC,
-		GCC,
-		CLANG
-	};
-
 	Compiler compiler;
+
+	std::string compilerVersion;
 
 	// complete path to the compiler binary file (cl.exe, gcc.exe etc or the equivalent on linux)
 	Path binary;
@@ -30,8 +33,9 @@ struct Settings
 		static const char* const SETTINGS_FILE;
 		static const char* const LIBRARY_LIST_FILE;
 		static const char* const LIBRARY_LIST_URL;
-		static const char* const PROFILES_FOLDER_NAME;
+		static std::string PROFILES_FOLDER_NAME;
 		
+		std::string activeProfile;
 
 		// complete path to the profiles folder
 		Path profiles;

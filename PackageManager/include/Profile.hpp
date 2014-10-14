@@ -6,16 +6,25 @@
 
 class Profile
 {
+	friend class SettingsManager;
+
 	private:
 		std::string	m_name;
 		Settings	m_settings;
 
-	public:
+		/*
+			Only SettingsManager can create profiles
+		*/
 		Profile( const std::string& profileName );
 
-		auto name()									const	-> std::string;
-		auto save()									const	-> void;
-		auto settings()								const	-> const Settings&;
+	public:
+		static const Profile& null;
 
-		auto load( std::string profileName = "" )			-> void;
+		auto name()		const	-> const	std::string&;
+		auto name()				->			std::string&;
+		auto settings()	const	-> const	Settings&;
+		auto settings()			->			Settings&;
+		auto save()		const	-> void;
+
+		auto load( std::string profileName = "" ) -> void;
 };

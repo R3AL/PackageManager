@@ -1,0 +1,5 @@
+<profile>
+	<settings>
+		<compiler name="MSVC" version="2012" binPath="C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"/>
+	</settings>
+</profile>

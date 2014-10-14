@@ -12,7 +12,7 @@
 #include "utils/Strings.hpp"
 #include "utils/FormattedPrint.hpp"
 #include "utils/FileDownloader.hpp"
-#include "utils/TaskProgressIndicator.hpp"
+#include "utils/ProgressIndicator.hpp"
 
 const std::string Library::extensions[] =
 {
@@ -190,19 +190,92 @@ auto Library::download() const -> bool
 	if( downloadDone )
 	{
 		FormattedPrint::On(std::cout, false).color( Green )
-											.app(" Done")
+											.app("Done")
 											.color()
 											.endl();
 	}
 	else
 	{
 		FormattedPrint::On(std::cout, false).color( Red )
-											.app(" Failed")
+											.app("Failed")
 											.color()
 											.endl();
 	}
 
 	return downloadDone;
+}
+
+auto Library::extract() const -> void
+{
+	using namespace utils;
+
+	if( ! isArchive() )
+	{
+		return;
+	}
+
+	FormattedPrint::On(std::cout)	.app("Extracting ")
+									.color( White )
+									.app( name() )
+									.color();
+
+	ProgressIndicator::Task([this]
+							{
+								static const std::string commandTemplate = "external\\bin\\7za x ";
+
+								/*
+									Extracting the archive
+								*/
+								std::string command = commandTemplate + "temp." + extensionStringFromUrl() + " > nul";
+
+								system( command.c_str() ); 
+
+								if( isTar() )
+								{
+									#if 0
+										command = commandTemplate + "temp.tar > nul";
+										system( command.c_str() ); 
+									#endif
+								}
+							} );
+	
+	FormattedPrint::On(std::cout, false).color( Green )
+										.app("Done")
+										.color()
+										.endl();
+}
+
+auto Library::clean() const	-> void
+{
+	using namespace utils;
+
+	if( ! isArchive() )
+	{
+		return;
+	}
+	
+	FormattedPrint::On(std::cout)	.app("Cleaning ")
+									.color( White )
+									.app( name() )
+									.color();
+
+	ProgressIndicator::Task([this]
+							{
+								auto command = "del temp." + extensionStringFromUrl() + " > nul";
+								system( command.c_str() ); 
+
+								if( isTar() )
+								{
+									command = "del temp.tar > nul";
+									system( command.c_str() ); 
+								}
+							});
+
+	FormattedPrint::On(std::cout, false).color( Green )
+										.app("Done")
+										.app(' ')
+										.color()
+										.endl();
 }
 
 auto Library::install()	const -> bool
@@ -211,22 +284,25 @@ auto Library::install()	const -> bool
 
 	if( download() )
 	{
-		std::string command = "external\\bin\\7za x temp." + extensionStringFromUrl() + " > nul";
+		extract();
 
 		FormattedPrint::On(std::cout)	.app("Installing ")
 										.color( White )
 										.app( name() )
+										.app(' ')
 										.color();
 
-		ProgressIndicator::Task([&command]
-								{ 
-									system( command.c_str() ); 
-								} );
+		ProgressIndicator::Task([this]
+								{
+									// TODO: actual install
+								});
 
 		FormattedPrint::On(std::cout, false).color( Green )
 											.app("Done")
 											.color()
 											.endl();
+
+		clean();
 
 		return true;
 	}
@@ -234,4 +310,15 @@ auto Library::install()	const -> bool
 	{
 		return false;
 	}
+}
+
+auto Library::isArchive() const -> bool
+{
+	return m_type == FileType::Archive;
+}
+
+auto Library::isTar() const -> bool
+{
+	return	m_archtype >= ArchiveType::TAR_GZ &&
+			m_archtype <= ArchiveType::TAR_XZ;
 }

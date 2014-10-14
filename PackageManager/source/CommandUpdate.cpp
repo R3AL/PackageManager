@@ -2,7 +2,7 @@
 
 #include "utils/FormattedPrint.hpp"
 #include "utils/FileDownloader.hpp"
-#include "utils/TaskProgressIndicator.hpp"
+#include "utils/ProgressIndicator.hpp"
 
 #include "SettingsManager.hpp"
 

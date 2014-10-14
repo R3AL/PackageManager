@@ -10,9 +10,6 @@ class SettingsManager
 {
 	Settings::Global m_global;
 
-	std::unordered_map< std::string, 
-						Settings > m_profiles;
-
 private:
 	SettingsManager();
 
@@ -20,9 +17,13 @@ private:
 	auto operator new(size_t)	-> void*;
 	auto operator delete(void*) -> void;
 
-public:
-	static auto instance()							-> SettingsManager&;
+	auto invalidXMLFile( const std::string& file ) const -> void;
 
-	auto global()									-> const Settings::Global&;
-	auto byProfile( const std::string& profile )	-> const Settings&;
+public:
+	static auto instance()			-> SettingsManager&;
+
+	auto global()					->			Settings::Global&;
+	auto global()			const 	-> const	Settings::Global&;
+
+	auto activeProfile()	const	-> Profile;
 };

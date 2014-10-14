@@ -112,7 +112,7 @@ bool CommandInstall::run( const std::vector< std::string >& programArguments ) c
 
 	if( ! notInstalledLibs.empty() )
 	{
-		FormattedPrint::On(std::cout)	.app("The follow libraries were notrtr5` installed:")
+		FormattedPrint::On(std::cout)	.app("The follow libraries were not installed:")
 										.endl();
 
 		for( const auto& lib : notInstalledLibs )

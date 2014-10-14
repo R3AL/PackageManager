@@ -29,18 +29,22 @@ public:
 	Library(const std::string& name,
 			const std::string& url);
 
-	auto name()		const -> std::string;
-	auto url()		const -> std::string;
-	auto type()		const -> FileType;
-	auto archType() const -> ArchiveType;
-	auto isValid()	const -> bool;
-	auto install()	const -> bool;
+	auto name()			const -> std::string;
+	auto url()			const -> std::string;
+	auto type()			const -> FileType;
+	auto archType()		const -> ArchiveType;
+	auto isValid()		const -> bool;
+	auto install()		const -> bool;
+	auto isArchive()	const -> bool;
+	auto isTar()		const -> bool;
 
 private:
 	auto identifyType()											-> void;
 	auto archiveTypeByIndex(const std::size_t& index)	const	-> ArchiveType;
 	auto extensionStringFromUrl()						const	-> std::string;
 	auto download()										const	-> bool;
+	auto extract()										const	-> void;
+	auto clean()										const	-> void;
 
 	static const std::string extensions[];
 

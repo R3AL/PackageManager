@@ -29,12 +29,17 @@ auto LibraryManager::reload() -> void
 
 	tinyxml2::XMLDocument libListDoc;
 
-	if( XML_NO_ERROR != libListDoc.LoadFile( SettingsManager::instance().global().LIBRARY_LIST_FILE ) )
+	const auto LIBFILE = SettingsManager::instance().global().LIBRARY_LIST_FILE;
+
+	if( XML_NO_ERROR != libListDoc.LoadFile( LIBFILE ) )
 	{
 		FormattedPrint::On(std::cout)	.app( "File open" )
 										.color( Red )
 										.app( " failed" )
 										.color()
+										.app(" [")
+										.app( LIBFILE )
+										.app(']')
 										.endl();
 		return;
 	}
