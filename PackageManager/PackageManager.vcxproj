@@ -97,6 +97,7 @@
     <ClInclude Include="include\ICommand.hpp" />
     <ClInclude Include="include\Library.hpp" />
     <ClInclude Include="include\LibraryManager.hpp" />
+    <ClInclude Include="include\null.hpp" />
     <ClInclude Include="include\Path.hpp" />
     <ClInclude Include="include\Profile.hpp" />
     <ClInclude Include="include\Settings.hpp" />

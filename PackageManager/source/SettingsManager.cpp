@@ -41,7 +41,7 @@ SettingsManager::SettingsManager()
 	}
 
 	// <profilesFolder>
-	auto profilesFolderNode = settingsNode->NextSiblingElement("profilesFolder");
+	auto profilesFolderNode = settingsNode->FirstChildElement("profilesFolder");
 
 	if( ! profilesFolderNode )
 	{

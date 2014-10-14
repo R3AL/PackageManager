@@ -5,13 +5,20 @@
 #include "utils/Switch.hpp"
 
 #include "SettingsManager.hpp"
-
-const Profile& Profile::null = Profile("");
+#include "Convert.hpp"
+#include "null.hpp"
 
 Profile::Profile( const std::string& profileName ):
 	m_name( profileName )
 {
 	load();
+}
+
+auto Profile::getNull() -> const Profile&
+{
+	static const Profile& null = Profile("");
+
+	return null;
 }
 
 auto Profile::name() const -> const std::string&
@@ -113,9 +120,48 @@ auto Profile::load( std::string profileName ) -> void
 		std::string compilerVersion = compilerNode->Attribute( "version" );
 		std::string binPath			= compilerNode->Attribute( "binPath" );
 
-		utils::Switch<Compiler>( compilerName )	.Case("MSVC",	Compiler::MSVC)
-												.Case("GCC",	Compiler::GCC)
-												.Case("CLANG",	Compiler::CLANG)
-												.Case("ICC",	Compiler::ICC).eval();
+		m_settings.compiler = utils::Switch<Compiler>( compilerName )	.Case("MSVC",	Compiler::MSVC)
+																		.Case("GCC",	Compiler::GCC)
+																		.Case("CLANG",	Compiler::CLANG)
+																		.Case("ICC",	Compiler::ICC)
+																		.eval();
+
+		m_settings.compilerVersion	= Version( compilerVersion );
+		m_settings.binary			= Path(binPath);
+
+		if( compilerNode->Attribute("includesPath") != nullptr )
+		{
+			m_settings.includes = Path( compilerNode->Attribute("includesPath") );
+		}
+		else
+		{
+			m_settings.includes = m_settings.binary;
+			m_settings.includes.up();
+			m_settings.includes.cd("include");
+		}
+
+		if( compilerNode->Attribute("libPath") != nullptr )
+		{
+			m_settings.lib = Path( compilerNode->Attribute("libPath") );
+
+		}
+		else
+		{
+			m_settings.lib = m_settings.binary;
+			m_settings.lib.up();
+			m_settings.lib.cd("lib");
+		}
+
+		std::cout << "Compiler: " << int(m_settings.compiler) << std::endl;
+		std::cout << "Compiler version: " << m_settings.compilerVersion.major << std::endl;
+		std::cout << "Compiler version: " << m_settings.compilerVersion.minor << std::endl;
+		std::cout << "Compiler version: " << m_settings.compilerVersion.build << std::endl;
+		std::cout << "Binary path: " << convert(m_settings.binary).to<std::string>() << std::endl;
+		std::cout << "Incl path: " << convert(m_settings.includes).to<std::string>() << std::endl;
+		std::cout << "Lib path: " << convert(m_settings.lib).to<std::string>() << std::endl;
+
+		int* k = nullptr;
+
+		std::cout << (k == null) << " " << ((*this) == null) << "\n";
 	}
 }

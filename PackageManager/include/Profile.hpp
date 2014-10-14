@@ -18,7 +18,7 @@ class Profile
 		Profile( const std::string& profileName );
 
 	public:
-		static const Profile& null;
+		static auto getNull() -> const Profile&;
 
 		auto name()		const	-> const	std::string&;
 		auto name()				->			std::string&;

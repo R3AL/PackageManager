@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 
 namespace utils
 {
@@ -37,11 +38,22 @@ namespace utils
 
 			mutableStringProxy( std::string& str );
 
+			template <typename T>
+			auto as() const -> T
+			{
+				T val;
+
+				std::stringstream oss( m_str );
+				oss >> val;
+
+				return val;
+			}
+
 			/*
 			 *	This method is useful when passing in strings to STL algorithms
 			 *	to disambiguate which comparison operator is to be used
 			 */
-			auto str()												const	-> std::string;
+			auto str()				const -> std::string;
 			operator std::string&() const;
 
 		private:
@@ -63,12 +75,23 @@ namespace utils
 			auto operator==( const immutableStringProxy& )			const -> bool;
 			auto operator!=( const immutableStringProxy& )			const -> bool;
 
+			template <typename T>
+			auto as() const -> T
+			{
+				T val;
+
+				std::stringstream oss( m_str );
+				oss >> val;
+
+				return val;
+			}
+
 			/*
 			 *	This method is useful when passing in strings to STL algorithms
 			 *	to disambiguate which comparison operator is to be used
 			 */
-			auto str()												const	-> std::string;
-			operator std::string() const;
+			auto str()				const -> std::string;
+			operator std::string()	const;
 
 			immutableStringProxy( const std::string& str );
 

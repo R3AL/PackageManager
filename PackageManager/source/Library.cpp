@@ -13,6 +13,7 @@
 #include "utils/FormattedPrint.hpp"
 #include "utils/FileDownloader.hpp"
 #include "utils/ProgressIndicator.hpp"
+#include "SettingsManager.hpp"
 
 const std::string Library::extensions[] =
 {
@@ -303,6 +304,8 @@ auto Library::install()	const -> bool
 											.endl();
 
 		clean();
+
+		const auto& profile = SettingsManager::instance().activeProfile();
 
 		return true;
 	}

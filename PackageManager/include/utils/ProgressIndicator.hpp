@@ -76,8 +76,8 @@ namespace utils
 		public:
 			template <	typename T, 
 						typename R = decltype( std::declval<T>()() ) >
-			static R Task(	const T& task,
-							const std::chrono::nanoseconds& updateInterval = std::chrono::milliseconds(100) )
+			static auto Task(	const T& task,
+								const std::chrono::nanoseconds& updateInterval = std::chrono::milliseconds(100) ) -> R
 			{
 				progressIndicatorThreadWrapper progress( updateInterval );
 

@@ -5,7 +5,7 @@
 
 namespace utils
 {
-	namespace
+	namespace internal
 	{
 		template <typename T>
 		struct proxy
@@ -35,7 +35,7 @@ namespace utils
 			{
 				if( m_caseValueMapping.count( m_str ) )
 				{
-					return m_caseValueMapping[ m_str ];
+					return m_caseValueMapping.at( m_str );
 				}
 
 				return m_default;
@@ -44,8 +44,8 @@ namespace utils
 	}
 
 	template <typename T>
-	proxy<T> Switch( std::string& str )
+	internal::proxy<T> Switch( std::string& str )
 	{
-		return proxy<T>( str );
+		return internal::proxy<T>( str );
 	}
 }

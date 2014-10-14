@@ -12,13 +12,35 @@ enum class Compiler
 	ICC
 };
 
+struct Version
+{
+	std::size_t major;
+	std::size_t minor;
+	std::size_t build;
+
+	Version();
+
+	/*
+	 *	For MSVC the versions are:
+	 *	...
+	 *	VS 2012 -> compiler version 17.0.0
+	 *	VS 2013 -> compiler version 18.0.0
+	 *	...
+	 */
+	Version(const std::size_t& major,
+			const std::size_t& minor,
+			const std::size_t& build);
+	
+	Version(const std::string& version);
+};
+
 struct Settings
 {
 	Compiler compiler;
 
-	std::string compilerVersion;
+	Version compilerVersion;
 
-	// complete path to the compiler binary file (cl.exe, gcc.exe etc or the equivalent on linux)
+	// complete path to the compiler binary file (cl.exe, gcc.exe etc or the equivalent on Linux)
 	Path binary;
 	
 	// complete path to 'include' folder of the compiler
@@ -42,7 +64,5 @@ struct Settings
 
 		// complete path to the folder containing the file with a list of all supported libraries
 		Path libraryList;
-
-		Global();
 	};
 };
