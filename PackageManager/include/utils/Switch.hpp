@@ -10,12 +10,12 @@ namespace utils
 		template <typename T>
 		struct proxy
 		{
-			std::string& m_str;
+			const std::string& m_str;
 
 			std::unordered_map< std::string, T > m_caseValueMapping;
 			T m_default;
 		
-			proxy( std::string& str ): m_str( str ) {}
+			proxy( const std::string& str ): m_str( str ) {}
 
 			proxy& Case( const std::string& caseValue, const T& returnValue )
 			{
@@ -44,7 +44,7 @@ namespace utils
 	}
 
 	template <typename T>
-	internal::proxy<T> Switch( std::string& str )
+	internal::proxy<T> Switch( const std::string& str )
 	{
 		return internal::proxy<T>( str );
 	}

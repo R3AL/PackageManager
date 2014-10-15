@@ -74,6 +74,11 @@ namespace utils
 		};
 
 		public:
+
+			/*
+			 *	This function runs the given function/functor/lambda in the current thread and displays an ascii progres indicator using a new thread.
+			 *	This also returns the value returned by the given function/functor/lambda
+			 */
 			template <	typename T, 
 						typename R = decltype( std::declval<T>()() ) >
 			static auto Task(	const T& task,

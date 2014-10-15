@@ -76,7 +76,7 @@ auto Profile::load( std::string profileName ) -> void
 
 		auto profileNode = profileDoc.FirstChildElement( "profile" );
 
-		if( ! profileNode )
+		if( profileNode == null )
 		{
 			utils::FormattedPrint::On(std::cout).color( utils::Red)
 												.app( "Invalid" )
@@ -90,7 +90,7 @@ auto Profile::load( std::string profileName ) -> void
 
 		auto settingsNode = profileNode->FirstChildElement( "settings" );
 
-		if( ! settingsNode )
+		if( settingsNode == null )
 		{
 			utils::FormattedPrint::On(std::cout).color( utils::Red)
 												.app( "Invalid" )
@@ -104,7 +104,7 @@ auto Profile::load( std::string profileName ) -> void
 
 		auto compilerNode = settingsNode->FirstChildElement( "compiler" );
 
-		if( ! compilerNode )
+		if( compilerNode == null )
 		{
 			utils::FormattedPrint::On(std::cout).color( utils::Red)
 												.app( "Invalid" )
@@ -129,7 +129,7 @@ auto Profile::load( std::string profileName ) -> void
 		m_settings.compilerVersion	= Version( compilerVersion );
 		m_settings.binary			= Path(binPath);
 
-		if( compilerNode->Attribute("includesPath") != nullptr )
+		if( compilerNode->Attribute("includesPath") != null )
 		{
 			m_settings.includes = Path( compilerNode->Attribute("includesPath") );
 		}
@@ -140,7 +140,7 @@ auto Profile::load( std::string profileName ) -> void
 			m_settings.includes.cd("include");
 		}
 
-		if( compilerNode->Attribute("libPath") != nullptr )
+		if( compilerNode->Attribute("libPath") != null )
 		{
 			m_settings.lib = Path( compilerNode->Attribute("libPath") );
 
@@ -159,9 +159,16 @@ auto Profile::load( std::string profileName ) -> void
 		std::cout << "Binary path: " << convert(m_settings.binary).to<std::string>() << std::endl;
 		std::cout << "Incl path: " << convert(m_settings.includes).to<std::string>() << std::endl;
 		std::cout << "Lib path: " << convert(m_settings.lib).to<std::string>() << std::endl;
-
-		int* k = nullptr;
-
-		std::cout << (k == null) << " " << ((*this) == null) << "\n";
 	}
+}
+
+auto operator==(const Profile& p1, const Profile& p2 ) -> bool
+{
+	return	p1.name()		== p2.name() &&
+			p1.settings()	== p2.settings();
+}
+
+auto operator!=(const Profile& p1, const Profile& p2 ) -> bool
+{
+	return ! ( p1 == p2 );
 }

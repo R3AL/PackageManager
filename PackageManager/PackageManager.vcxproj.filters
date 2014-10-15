@@ -84,6 +84,9 @@
     <ClCompile Include="source\Library.cpp">
       <Filter>Source Files\source</Filter>
     </ClCompile>
+    <ClCompile Include="source\Script.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Convert.hpp">
@@ -144,6 +147,9 @@
       <Filter>Header Files\include\utils</Filter>
     </ClInclude>
     <ClInclude Include="include\null.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Script.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,7 +21,7 @@ Path::Path( const std::string& path )
 	m_folders =	utils::Strings::Keep( path ).replace( '\\', '/' ).split( '/' );
 }
 
-void Path::up( unsigned levels )
+auto Path::up( unsigned levels ) -> void
 {
 	std::size_t index;
 
@@ -55,22 +55,33 @@ Path::operator string() const
 	return path;
 }
 
-void Path::cd( const std::string& folder )
+auto Path::cd( const std::string& folder ) -> void
 {
 	m_folders.push_back( folder );
 }
 
-bool Path::isFolder() const
+auto Path::isFolder() const -> bool
 {
 	return true;
 }
 
-bool Path::isFile() const
+auto Path::isFile() const -> bool
 {
 	return false;
 }
 
-bool Path::isEmpty() const
+auto Path::isEmpty() const -> bool
 {
 	return m_folders.empty();
+}
+
+auto operator==(const Path& p1, const Path& p2 ) -> bool
+{
+	return	static_cast<std::string>(p1) ==
+			static_cast<std::string>(p2);
+}
+
+auto operator!=(const Path& p1, const Path& p2 ) -> bool
+{
+	return ! ( p1 == p2 );
 }

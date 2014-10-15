@@ -10,11 +10,10 @@ class Path
 	friend converter<Path>;
 
 private:
-	operator std::string() const;
-
 	std::vector< std::string > m_folders;
 
 public:
+	operator std::string() const;
 
 	Path();
 	Path( const std::string& path );
@@ -22,22 +21,25 @@ public:
 	/*
 		go up a number of folders
 	*/
-	void up( unsigned levels = 1 );
+	auto up( unsigned levels = 1 ) -> void;
 
 	/*
 		go into a specific folder
 	*/
-	void cd( const std::string& folder );
+	auto cd( const std::string& folder ) -> void;
 
 	/*
 		returns true if the rightmost element from the path is a folder
 	*/
-	bool isFolder() const;
+	auto isFolder() const -> bool;
 
 	/*
 		returns true if the rightmost element from the path is a file
 	*/
-	bool isFile() const;
+	auto isFile() const -> bool;
 
-	bool isEmpty() const;
+	auto isEmpty() const -> bool;
 };
+
+auto operator==(const Path& p1, const Path& p2 ) -> bool;
+auto operator!=(const Path& p1, const Path& p2 ) -> bool;

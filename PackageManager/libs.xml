@@ -1,5 +1,5 @@
 <libraries>
-	<lib name="boost" url="some url.h"/>
+	<lib name="boost" url="http://netcologne.dl.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.bz2" scriptLocation="boost_1_56_0"/>
 	<lib name="BOOSTV2" url="some url"/>
 	<lib name="BOOSTV3" url="some url"/>
 	<lib name="BooSTV4" url="some url"/>

@@ -47,3 +47,29 @@ Version::Version(const std::string& version):
 	minor = Strings::Keep(versionElements[1]).as<size_t>();
 	build = Strings::Keep(versionElements[2]).as<size_t>();
 }
+
+auto operator==(const Version& v1, const Version& v2 ) -> bool
+{
+	return	v1.major == v2.major &&
+			v1.minor == v2.minor &&
+			v1.build == v2.build;
+}
+
+auto operator!=(const Version& v1, const Version& v2 ) -> bool
+{
+	return ! ( v1 == v2 );
+}
+
+auto operator==(const Settings& s1, const Settings& s2 ) -> bool
+{
+	return	s1.compiler			== s2.compiler &&
+			s1.compilerVersion	== s2.compilerVersion &&
+			s1.binary			== s2.binary &&
+			s1.includes			== s2.includes &&
+			s1.lib				== s2.lib;
+}
+
+auto operator!=(const Settings& s1, const Settings& s2 ) -> bool
+{
+	return ! ( s1 == s2 );
+}

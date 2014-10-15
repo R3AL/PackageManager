@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "SettingsManager.hpp"
+#include "null.hpp"
 
 #include "utils/Strings.hpp"
 #include "utils/FormattedPrint.hpp"
@@ -61,12 +62,20 @@ auto LibraryManager::reload() -> void
 		return;
 	}
 
-	for(auto lib = librariesNode->FirstChildElement("lib"); 
-		lib != nullptr; 
-		lib = lib->NextSiblingElement("lib"))
+	for(auto	lib = librariesNode->FirstChildElement("lib"); 
+				lib != null; 
+				lib = lib->NextSiblingElement("lib"))
 	{
+		std::string scriptLocation = "";
+
+		if( lib->Attribute("scriptLocation") != null )
+		{
+			scriptLocation = lib->Attribute("scriptLocation");
+		}
+
 		m_libraries.emplace_back(	lib->Attribute( "name" ),
-									lib->Attribute( "url" ) );
+									lib->Attribute( "url" ),
+									"C:/Users/alexandru.merisanu/Documents/GitHub/PackageManager/Debug/boost_1_56_0" );
 	}
 }
 

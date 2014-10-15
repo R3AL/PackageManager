@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <initializer_list>
 
 namespace utils
 {
@@ -21,6 +22,10 @@ namespace utils
 			
 		static auto toLower(const std::string& str)					-> std::string;
 		static auto toUpper(const std::string& str)					-> std::string;
+		static auto strip(	std::string str,
+							const char& charToStrip)				-> std::string;
+		static auto trimRight(	const std::string& str,
+								const std::size_t& count)			-> std::string;
 
 		class mutableStringProxy
 		{
@@ -33,6 +38,10 @@ namespace utils
 			auto toupper()													-> mutableStringProxy;
 			auto split( const char& delimiter )						const	-> std::vector< std::string >;
 			auto contains( const std::string& what )				const	-> bool;
+			auto strip(const char& charToStrip)								-> mutableStringProxy;
+			auto strip(std::initializer_list<char> list )					-> mutableStringProxy;
+			auto trimRight( const std::size_t& count )						-> mutableStringProxy;
+
 			auto operator==( const mutableStringProxy& )			const	-> bool;
 			auto operator!=( const mutableStringProxy& )			const	-> bool;
 
@@ -72,6 +81,10 @@ namespace utils
 			auto toupper()											const -> immutableStringProxy;
 			auto split( const char& delimiter )						const -> std::vector< std::string >;
 			auto contains( const std::string& what )				const -> bool;
+			auto strip(const char& charToStrip)						const -> immutableStringProxy;
+			auto strip(std::initializer_list<char> list )			const -> immutableStringProxy;
+			auto trimRight( const std::size_t& count )				const -> immutableStringProxy;
+			
 			auto operator==( const immutableStringProxy& )			const -> bool;
 			auto operator!=( const immutableStringProxy& )			const -> bool;
 

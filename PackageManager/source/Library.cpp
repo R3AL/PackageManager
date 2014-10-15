@@ -2,18 +2,20 @@
 
 #include <initializer_list>
 #include <vector>
-#include <iostream>
 #include <thread>
 #include <atomic>
 #include <numeric>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 #include "utils/Strings.hpp"
 #include "utils/FormattedPrint.hpp"
 #include "utils/FileDownloader.hpp"
 #include "utils/ProgressIndicator.hpp"
+
 #include "SettingsManager.hpp"
+#include "Script.hpp"
 
 const std::string Library::extensions[] =
 {
@@ -25,12 +27,13 @@ const std::string Library::extensions[] =
 	"xz"
 };
 
-Library::Library(const std::string& name, const std::string& url):
-	m_name		( name ),
-	m_url		( url ),
-	m_valid		( true ),
-	m_type		( FileType::Unknown ),
-	m_archtype	( ArchiveType::Unknown )
+Library::Library(const std::string& name, const std::string& url, const std::string& scriptLocation):
+	m_name				( name ),
+	m_url				( url ),
+	m_scriptLocation	( scriptLocation ),
+	m_valid				( true ),
+	m_type				( FileType::Unknown ),
+	m_archtype			( ArchiveType::Unknown )
 {
 	if( m_name.empty() )
 	{
@@ -55,6 +58,11 @@ auto Library::name() const -> std::string
 auto Library::url() const -> std::string
 {
 	return m_url;
+}
+
+auto Library::scriptLocation() const -> std::string
+{
+	return m_scriptLocation;
 }
 
 auto Library::type() const -> FileType
@@ -98,9 +106,9 @@ auto Library::identifyType() -> void
 			archiveTypeIndex = std::distance(	std::begin(extensions),
 												it );
 
-			lastExtension	= m_url.substr( archiveTypeIndex );
-			m_type			= FileType::Archive;
-			m_archtype		= archiveTypeByIndex( archiveTypeIndex );
+			lastExtension		= m_url.substr( archiveTypeIndex );
+			m_type				= FileType::Archive;
+			m_archtype			= archiveTypeByIndex( archiveTypeIndex );
 		}
 		else
 		{
@@ -233,7 +241,7 @@ auto Library::extract() const -> void
 
 								if( isTar() )
 								{
-									#if 0
+									#if 1
 										command = commandTemplate + "temp.tar > nul";
 										system( command.c_str() ); 
 									#endif
@@ -283,33 +291,56 @@ auto Library::install()	const -> bool
 {
 	using namespace utils;
 
-	if( download() )
+	//if( download() )
 	{
-		extract();
+		//extract();
 
 		FormattedPrint::On(std::cout)	.app("Installing ")
 										.color( White )
 										.app( name() )
 										.app(' ')
-										.color();
+										.color()
+										.endl();
 
-		ProgressIndicator::Task([this]
-								{
-									// TODO: actual install
-								});
+		switch ( type() )
+		{
+			case FileType::Archive:
+			{
+				Script(this).run();
+			}break;
 
+			case FileType::SingleHeaderH:
+				break;
+
+			case FileType::SingleHeaderHPP:
+				break;
+
+			default:
+				break;
+		}
+
+		/*
+		ProgressIndicator::Task(
+			[this]
+			{
+				// TODO: actual install
+			});
+		*/
+
+		/*
 		FormattedPrint::On(std::cout, false).color( Green )
 											.app("Done")
 											.color()
 											.endl();
+		*/
 
-		clean();
+		//clean();
 
-		const auto& profile = SettingsManager::instance().activeProfile();
+		//const auto& profile = SettingsManager::instance().activeProfile();
 
 		return true;
 	}
-	else
+	//else
 	{
 		return false;
 	}

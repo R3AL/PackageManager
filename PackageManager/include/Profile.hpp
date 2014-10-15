@@ -7,7 +7,7 @@
 class Profile
 {
 	friend class SettingsManager;
-
+	
 	private:
 		std::string	m_name;
 		Settings	m_settings;
@@ -28,3 +28,6 @@ class Profile
 
 		auto load( std::string profileName = "" ) -> void;
 };
+
+auto operator==(const Profile& p1, const Profile& p2 ) -> bool;
+auto operator!=(const Profile& p1, const Profile& p2 ) -> bool;

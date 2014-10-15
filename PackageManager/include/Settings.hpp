@@ -34,6 +34,9 @@ struct Version
 	Version(const std::string& version);
 };
 
+auto operator==(const Version& v1, const Version& v2 ) -> bool;
+auto operator!=(const Version& v1, const Version& v2 ) -> bool;
+
 struct Settings
 {
 	Compiler compiler;
@@ -66,3 +69,6 @@ struct Settings
 		Path libraryList;
 	};
 };
+
+auto operator==(const Settings& s1, const Settings& s2 ) -> bool;
+auto operator!=(const Settings& s1, const Settings& s2 ) -> bool;

@@ -94,6 +94,22 @@ namespace utils
 		return strCopy;
 	}
 
+	auto Strings::trimRight(const std::string& str,
+							const std::size_t& count) -> std::string
+	{
+		return str.substr( 0, str.length() - count );
+	}
+
+	auto Strings::strip(std::string str,
+						const char& charToStrip) -> std::string
+	{
+		str.erase(	std::remove(str.begin(), 
+								str.end(), 
+								charToStrip), 
+					str.end() );
+
+		return str;
+	}
 
 
 	/*
@@ -181,6 +197,29 @@ namespace utils
 		return m_str.find( what ) != std::string::npos;
 	}
 
+	auto Strings::mutableStringProxy::trimRight( const std::size_t& count ) -> mutableStringProxy
+	{
+		m_str = Strings::trimRight( m_str, count );
+
+		return *this;
+	}
+
+	auto Strings::mutableStringProxy::strip(const char& charToStrip) -> mutableStringProxy
+	{
+		m_str = Strings::strip( m_str, charToStrip );
+
+		return *this;
+	}
+
+	auto Strings::mutableStringProxy::strip(std::initializer_list<char> list ) -> mutableStringProxy
+	{
+		for( const auto& ch : list )
+		{
+			strip( ch );
+		}
+
+		return *this;
+	}
 
 
 	/*
@@ -258,5 +297,25 @@ namespace utils
 	auto Strings::immutableStringProxy::contains( const std::string& what ) const -> bool
 	{
 		return m_str.find( what ) != std::string::npos;
+	}
+
+	auto Strings::immutableStringProxy::trimRight( const std::size_t& count ) const -> immutableStringProxy
+	{
+		return immutableStringProxy( Strings::trimRight( m_str, count ) );
+	}
+
+	auto Strings::immutableStringProxy::strip(const char& charToStrip) const -> immutableStringProxy
+	{
+		return immutableStringProxy( Strings::strip( m_str, charToStrip ) );
+	}
+
+	auto Strings::immutableStringProxy::strip(std::initializer_list<char> list ) const -> immutableStringProxy
+	{
+		for( const auto& ch : list )
+		{
+			strip( ch );
+		}
+
+		return *this;
 	}
 }

@@ -80,6 +80,7 @@
     <ClCompile Include="source\LibraryManager.cpp" />
     <ClCompile Include="source\Path.cpp" />
     <ClCompile Include="source\Profile.cpp" />
+    <ClCompile Include="source\Script.cpp" />
     <ClCompile Include="source\Settings.cpp" />
     <ClCompile Include="source\SettingsManager.cpp" />
     <ClCompile Include="source\utils\FileDownloader.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="include\null.hpp" />
     <ClInclude Include="include\Path.hpp" />
     <ClInclude Include="include\Profile.hpp" />
+    <ClInclude Include="include\Script.hpp" />
     <ClInclude Include="include\Settings.hpp" />
     <ClInclude Include="include\SettingsManager.hpp" />
     <ClInclude Include="include\utils\FileDownloader.hpp" />

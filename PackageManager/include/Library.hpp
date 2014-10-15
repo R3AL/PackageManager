@@ -27,16 +27,18 @@ public:
 	};
 
 	Library(const std::string& name,
-			const std::string& url);
+			const std::string& url,
+			const std::string& scriptLocation);
 
-	auto name()			const -> std::string;
-	auto url()			const -> std::string;
-	auto type()			const -> FileType;
-	auto archType()		const -> ArchiveType;
-	auto isValid()		const -> bool;
-	auto install()		const -> bool;
-	auto isArchive()	const -> bool;
-	auto isTar()		const -> bool;
+	auto name()				const -> std::string;
+	auto url()				const -> std::string;
+	auto scriptLocation()	const -> std::string;
+	auto type()				const -> FileType;
+	auto archType()			const -> ArchiveType;
+	auto isValid()			const -> bool;
+	auto install()			const -> bool;
+	auto isArchive()		const -> bool;
+	auto isTar()			const -> bool;
 
 private:
 	auto identifyType()											-> void;
@@ -50,6 +52,7 @@ private:
 
 	const std::string m_name;
 	const std::string m_url;
+	const std::string m_scriptLocation;
 
 	bool m_valid;
 
