@@ -100,6 +100,12 @@ namespace utils
 		return str.substr( 0, str.length() - count );
 	}
 
+	auto Strings::trimLeft(	const std::string& str,
+							const std::size_t& count) -> std::string
+	{
+		return str.substr( count );
+	}
+
 	auto Strings::strip(std::string str,
 						const char& charToStrip) -> std::string
 	{
@@ -204,6 +210,13 @@ namespace utils
 		return *this;
 	}
 
+	auto Strings::mutableStringProxy::trimLeft( const std::size_t& count ) -> mutableStringProxy
+	{
+		m_str = Strings::trimLeft( m_str, count );
+
+		return *this;
+	}
+
 	auto Strings::mutableStringProxy::strip(const char& charToStrip) -> mutableStringProxy
 	{
 		m_str = Strings::strip( m_str, charToStrip );
@@ -302,6 +315,11 @@ namespace utils
 	auto Strings::immutableStringProxy::trimRight( const std::size_t& count ) const -> immutableStringProxy
 	{
 		return immutableStringProxy( Strings::trimRight( m_str, count ) );
+	}
+
+	auto Strings::immutableStringProxy::trimLeft( const std::size_t& count ) const -> immutableStringProxy
+	{
+		return immutableStringProxy( Strings::trimLeft( m_str, count ) );
 	}
 
 	auto Strings::immutableStringProxy::strip(const char& charToStrip) const -> immutableStringProxy

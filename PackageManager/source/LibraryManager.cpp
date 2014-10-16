@@ -75,7 +75,7 @@ auto LibraryManager::reload() -> void
 
 		m_libraries.emplace_back(	lib->Attribute( "name" ),
 									lib->Attribute( "url" ),
-									"C:/Users/alexandru.merisanu/Documents/GitHub/PackageManager/Debug/boost_1_56_0" );
+									"C:/Users/alexandru.merisanu/Documents/GitHub/PackageManager/PackageManager" );
 	}
 }
 

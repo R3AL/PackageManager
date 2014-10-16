@@ -26,6 +26,8 @@ namespace utils
 							const char& charToStrip)				-> std::string;
 		static auto trimRight(	const std::string& str,
 								const std::size_t& count)			-> std::string;
+		static auto trimLeft(	const std::string& str,
+								const std::size_t& count)			-> std::string;
 
 		class mutableStringProxy
 		{
@@ -41,6 +43,7 @@ namespace utils
 			auto strip(const char& charToStrip)								-> mutableStringProxy;
 			auto strip(std::initializer_list<char> list )					-> mutableStringProxy;
 			auto trimRight( const std::size_t& count )						-> mutableStringProxy;
+			auto trimLeft( const std::size_t& count )						-> mutableStringProxy;
 
 			auto operator==( const mutableStringProxy& )			const	-> bool;
 			auto operator!=( const mutableStringProxy& )			const	-> bool;
@@ -84,6 +87,7 @@ namespace utils
 			auto strip(const char& charToStrip)						const -> immutableStringProxy;
 			auto strip(std::initializer_list<char> list )			const -> immutableStringProxy;
 			auto trimRight( const std::size_t& count )				const -> immutableStringProxy;
+			auto trimLeft( const std::size_t& count )				const -> immutableStringProxy;
 			
 			auto operator==( const immutableStringProxy& )			const -> bool;
 			auto operator!=( const immutableStringProxy& )			const -> bool;

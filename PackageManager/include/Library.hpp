@@ -4,6 +4,8 @@
 
 class Library
 {
+	friend class Script;
+
 public:
 	enum class FileType
 	{

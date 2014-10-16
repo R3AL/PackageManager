@@ -9,7 +9,9 @@ enum class Compiler
 	MSVC,
 	GCC,
 	CLANG,
-	ICC
+	ICC,
+
+	Unknown
 };
 
 struct Version
@@ -34,8 +36,24 @@ struct Version
 	Version(const std::string& version);
 };
 
-auto operator==(const Version& v1, const Version& v2 ) -> bool;
-auto operator!=(const Version& v1, const Version& v2 ) -> bool;
+auto operator==(const Version& v1, 
+				const Version& v2 )	-> bool;
+
+auto operator!=(const Version& v1, 
+				const Version& v2 )	-> bool;
+
+auto operator>(const Version& v1, 
+			   const Version& v2 )	-> bool;
+
+auto operator>=(const Version& v1, 
+				const Version& v2 )	-> bool;
+
+auto operator<(	const Version& v1, 
+				const Version& v2 )	-> bool;
+
+auto operator<=(const Version& v1, 
+				const Version& v2 )	-> bool;
+
 
 struct Settings
 {

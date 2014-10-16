@@ -1,0 +1,27 @@
+#compilers
+{
+	MSVC: 17.0.0,
+	CLANG: 3.0.0,
+	GCC: 4.9.0
+}
+
+#preinstall
+{
+	print: hi,
+	run: ipconfig
+}
+
+#install
+{
+	
+}
+
+#postinstall
+{
+	
+}
+
+#remove
+{
+	
+}

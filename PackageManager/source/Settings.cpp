@@ -60,6 +60,55 @@ auto operator!=(const Version& v1, const Version& v2 ) -> bool
 	return ! ( v1 == v2 );
 }
 
+auto operator>(const Version& v1, const Version& v2 ) -> bool
+{
+	if( v1.major > v2.major )
+	{
+		return true;
+	}
+	else if( v1.major < v2.major )
+	{
+		return false;
+	}
+
+	if( v1.minor > v2.minor )
+	{
+		return true;
+	}
+	else if( v1.minor < v2.minor )
+	{
+		return false;
+	}
+
+	if( v1.build > v2.build )
+	{
+		return true;
+	}
+	else if( v1.build < v2.build )
+	{
+		return false;
+	}
+
+	return false;
+}
+
+auto operator>=(const Version& v1, const Version& v2 ) -> bool
+{
+	return	( v1 > v2 ) || 
+			( v1 == v2 );
+}
+
+auto operator<(const Version& v1, const Version& v2 ) -> bool
+{
+	return v2 > v1;
+}
+
+auto operator<=(const Version& v1, const Version& v2 ) -> bool
+{
+	return	( v1 < v2 ) || 
+			( v1 == v2 );
+}
+
 auto operator==(const Settings& s1, const Settings& s2 ) -> bool
 {
 	return	s1.compiler			== s2.compiler &&
