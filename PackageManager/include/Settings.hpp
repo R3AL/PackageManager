@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 #include "Path.hpp"
 
@@ -13,6 +14,8 @@ enum class Compiler
 
 	Unknown
 };
+
+auto operator<<(std::ostream& os, const Compiler& compiler) -> std::ostream&;
 
 struct Version
 {
@@ -35,6 +38,8 @@ struct Version
 	
 	Version(const std::string& version);
 };
+
+auto operator<<(std::ostream& os, const Version& version) -> std::ostream&;
 
 auto operator==(const Version& v1, 
 				const Version& v2 )	-> bool;

@@ -152,6 +152,7 @@ auto Profile::load( std::string profileName ) -> void
 			m_settings.lib.cd("lib");
 		}
 
+		/*
 		std::cout << "Compiler: " << int(m_settings.compiler) << std::endl;
 		std::cout << "Compiler version: " << m_settings.compilerVersion.major << std::endl;
 		std::cout << "Compiler version: " << m_settings.compilerVersion.minor << std::endl;
@@ -159,6 +160,7 @@ auto Profile::load( std::string profileName ) -> void
 		std::cout << "Binary path: " << convert(m_settings.binary).to<std::string>() << std::endl;
 		std::cout << "Incl path: " << convert(m_settings.includes).to<std::string>() << std::endl;
 		std::cout << "Lib path: " << convert(m_settings.lib).to<std::string>() << std::endl;
+		*/
 	}
 }
 

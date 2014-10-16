@@ -8,6 +8,34 @@ const char* const Settings::Global::LIBRARY_LIST_FILE		= "libs.xml";
 const char* const Settings::Global::LIBRARY_LIST_URL		= "https://raw.githubusercontent.com/R3AL/PackageManager/master/Debug/libs.xml";
 std::string Settings::Global::PROFILES_FOLDER_NAME			= "profiles";
 
+auto operator<<(std::ostream& os, const Compiler& compiler) -> std::ostream&
+{
+	switch( compiler )
+	{
+		case Compiler::MSVC:
+			os << "MSVC";
+		break;
+
+		case Compiler::GCC:
+			os << "GCC";
+		break;
+
+		case Compiler::CLANG:
+			os << "CLANG";
+		break;
+
+		case Compiler::ICC:
+			os << "ICC";
+		break;
+
+		case Compiler::Unknown:
+			os << "Unknown";
+		break;
+	}
+
+	return os;
+}
+
 Version::Version():
 	major(0),
 	minor(0),
@@ -46,6 +74,13 @@ Version::Version(const std::string& version):
 	major = Strings::Keep(versionElements[0]).as<size_t>();
 	minor = Strings::Keep(versionElements[1]).as<size_t>();
 	build = Strings::Keep(versionElements[2]).as<size_t>();
+}
+
+auto operator<<(std::ostream& os, const Version& version) -> std::ostream&
+{
+	os << version.major << '.' << version.minor << '.' << version.build;
+
+	return os;
 }
 
 auto operator==(const Version& v1, const Version& v2 ) -> bool

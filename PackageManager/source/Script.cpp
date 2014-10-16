@@ -143,9 +143,13 @@ Script::Script( const Library* const library ):
 			const auto& ActiveProfileSettings = SettingsManager::instance().activeProfile().settings();
 			
 			if( (	supportedCompilers.count( ActiveProfileSettings.compiler ) == 0 ) ||
-					supportedCompilers[ ActiveProfileSettings.compiler ] < ActiveProfileSettings.compilerVersion )
+					ActiveProfileSettings.compilerVersion < supportedCompilers[ ActiveProfileSettings.compiler ])
 			{
-				FormattedPrint::On(std::cout)	.app( "The curent profile compiler does not support this library !")
+				FormattedPrint::On(std::cout)	.app( "The current profile compiler [")
+												.color( Yellow )
+												.app( ActiveProfileSettings.compiler )
+												.color()
+												.app("] does not support this library !")
 												.endl();
 
 				m_valid = false;
@@ -280,9 +284,25 @@ auto Script::runCommand(const std::string& command,
 										arguments.end(),
 										std::string() );
 
-			cmd += " 2> logs/" + m_library->name() + "_install.script.log";
+			cmd += " 1> nul 2> logs/" + m_library->name() + "_install.script.log";
 
 			system( cmd.c_str() );
+		}break;
+
+		case ScriptCommand::Copy:
+		{
+			/*
+			 *	/E - copies directories and subdirectories, including empty ones
+			 *	/I - assume destination is a folder if it does not exist
+			 */
+			std::string cmd = "echo xcopy /E /I " + arguments[0] + " 2^>^> logs/" + m_library->name() + "_install.script.log > tmp.bat";
+
+			FormattedPrint::On(std::cout)	.app("Running: ")
+											.app( cmd )
+											.endl();
+
+			system( cmd.c_str() );
+			system( "tmp.bat" );
 		}break;
 
 		case ScriptCommand::Unknown:
