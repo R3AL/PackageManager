@@ -8,8 +8,7 @@
 #preinstall
 {
 	print: hi,
-	run: ipconfig,
-	copy: internal
+	run: ipconfig
 }
 
 #install

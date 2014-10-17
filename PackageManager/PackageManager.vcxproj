@@ -85,6 +85,7 @@
     <ClCompile Include="source\SettingsManager.cpp" />
     <ClCompile Include="source\utils\FileDownloader.cpp" />
     <ClCompile Include="source\utils\FormattedPrint.cpp" />
+    <ClCompile Include="source\utils\Process.cpp" />
     <ClCompile Include="source\utils\Strings.cpp" />
     <ClCompile Include="source\utils\tinyxml2.cpp" />
   </ItemGroup>
@@ -106,6 +107,7 @@
     <ClInclude Include="include\SettingsManager.hpp" />
     <ClInclude Include="include\utils\FileDownloader.hpp" />
     <ClInclude Include="include\utils\FormattedPrint.hpp" />
+    <ClInclude Include="include\utils\Process.hpp" />
     <ClInclude Include="include\utils\Strings.hpp" />
     <ClInclude Include="include\utils\ProgressIndicator.hpp" />
     <ClInclude Include="include\utils\Switch.hpp" />

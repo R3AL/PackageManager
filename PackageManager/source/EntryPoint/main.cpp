@@ -1,6 +1,9 @@
 #include "Path.hpp"
 #include "Convert.hpp"
+
 #include "utils/Strings.hpp"
+#include "utils/Process.hpp"
+
 #include "CommandDispatcher.hpp"
 
 #include <iostream>
@@ -16,8 +19,28 @@ int main( int argc, char** argv )
 			std::cout << error << "\n";
 		}
 	}
-	
 
+
+	// Copy folders
+	/*
+	Process("xcopy").arg("/E")
+					.arg("/I")
+					.arg("/Y")
+					.arg("external")
+					.arg("internal")
+					.redirect(StdError, "logs/whatever.txt", Append)
+					.run();
+	*/
+
+	// Copy files
+	/*
+	Process("copy")	.arg("/Y")
+					.arg("input.xml")
+					.arg("output.xml")
+					.redirect(StdError, "logs/whatever.txt", Append)
+					.run();
+					*/
+	
 	/*
 	using namespace utils;
 

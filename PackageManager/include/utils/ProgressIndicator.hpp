@@ -50,10 +50,7 @@ namespace utils
 																					.app(']')
 																					.color();
 
-												if( slashIndex == 4 )
-												{
-													slashIndex = 0;
-												}
+												slashIndex = slashIndex % 4;
 
 												std::this_thread::sleep_for( updateInterval );
 											}

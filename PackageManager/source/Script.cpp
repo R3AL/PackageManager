@@ -7,6 +7,7 @@
 #include "utils/FormattedPrint.hpp"
 #include "utils/Strings.hpp"
 #include "utils/Switch.hpp"
+#include "utils/Process.hpp"
 
 #include "Library.hpp"
 #include "Settings.hpp"
@@ -91,7 +92,8 @@ Script::Script( const Library* const library ):
 		{
 			auto contentElements = Strings::Keep(sectionContent).split(',');
 
-			std::unordered_map< Compiler, Version > supportedCompilers;
+			std::unordered_map< Compiler, 
+								Version > supportedCompilers;
 
 			for( const auto& element : contentElements )
 			{
@@ -280,13 +282,15 @@ auto Script::runCommand(const std::string& command,
 
 		case ScriptCommand::Run:
 		{
-			auto cmd = std::accumulate(	arguments.begin(),
-										arguments.end(),
-										std::string() );
-
-			cmd += " 1> nul 2> logs/" + m_library->name() + "_install.script.log";
-
-			system( cmd.c_str() );
+			Process(arguments[0])	.arg( std::accumulate(	arguments.begin() + 1,
+															arguments.end(),
+															std::string() ) )
+									.redirect(	StdOutput, 
+												"logs/" + m_library->name() + "_install.script.log", 
+												Append)
+									.redirect(	StdError, 
+												StdOutput)
+									.run();
 		}break;
 
 		case ScriptCommand::Copy:
@@ -295,6 +299,7 @@ auto Script::runCommand(const std::string& command,
 			 *	/E - copies directories and subdirectories, including empty ones
 			 *	/I - assume destination is a folder if it does not exist
 			 */
+			/*
 			std::string cmd = "echo xcopy /E /I " + arguments[0] + " 2^>^> logs/" + m_library->name() + "_install.script.log > tmp.bat";
 
 			FormattedPrint::On(std::cout)	.app("Running: ")
@@ -303,6 +308,9 @@ auto Script::runCommand(const std::string& command,
 
 			system( cmd.c_str() );
 			system( "tmp.bat" );
+			*/
+
+			//Process(
 		}break;
 
 		case ScriptCommand::Unknown:

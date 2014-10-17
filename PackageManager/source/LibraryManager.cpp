@@ -75,7 +75,7 @@ auto LibraryManager::reload() -> void
 
 		m_libraries.emplace_back(	lib->Attribute( "name" ),
 									lib->Attribute( "url" ),
-									"C:/Users/Alex/Documents/GitHub/PackageManager/PackageManager" );
+									"C:/Users/alexandru.merisanu/Documents/GitHub/PackageManager/PackageManager" );
 	}
 }
 
