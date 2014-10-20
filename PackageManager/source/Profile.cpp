@@ -120,11 +120,11 @@ auto Profile::load( std::string profileName ) -> void
 		std::string compilerVersion = compilerNode->Attribute( "version" );
 		std::string binPath			= compilerNode->Attribute( "binPath" );
 
-		m_settings.compiler = utils::Switch<Compiler>( compilerName )	.Case("MSVC",	Compiler::MSVC)
-																		.Case("GCC",	Compiler::GCC)
-																		.Case("CLANG",	Compiler::CLANG)
-																		.Case("ICC",	Compiler::ICC)
-																		.eval();
+		m_settings.compiler = utils::Switch( compilerName )	.Case("MSVC",	Compiler::MSVC)
+															.Case("GCC",	Compiler::GCC)
+															.Case("CLANG",	Compiler::CLANG)
+															.Case("ICC",	Compiler::ICC)
+															.Eval();
 
 		m_settings.compilerVersion	= Version( compilerVersion );
 		m_settings.binary			= Path(binPath);

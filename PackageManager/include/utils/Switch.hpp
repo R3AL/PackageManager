@@ -2,188 +2,156 @@
 
 #include <string>
 #include <unordered_map>
+#include <type_traits>
+#include <functional>
 
 namespace utils
 {
-	namespace internal
+	namespace metafunctions
 	{
 		template <typename T>
-		struct proxy
+		class has_callOperator
 		{
+		private:
+			template <typename U, U>
+			class check
+			{ };
+
+			template <typename C>
+			static auto f(check<decltype(C::operator()), &C::operator()>*) -> char;
+
+			template <typename C>
+			static auto f(...) -> long;
+
+		public:
+			static const bool value = (sizeof(f<T>(0)) == sizeof(char));
+		};
+	}
+
+	namespace internal
+	{
+		class firstLevelProxy
+		{
+			template <	typename T, 
+						bool isCallable = metafunctions::has_callOperator<T>::value>
+			friend struct secondLevelProxy;
+
 			const std::string& m_str;
 
-			std::unordered_map< std::string, T > m_caseValueMapping;
-			T m_default;
-		
-			proxy( const std::string& str ): m_str( str ) {}
-
-			proxy& Case( const std::string& caseValue, const T& returnValue )
+		public:
+			firstLevelProxy( const std::string& str ) :
+				m_str( str )
 			{
-				m_caseValueMapping[ caseValue ] = returnValue;
+
+			}
+
+			template <typename T>
+			auto Case(	const std::string&	value,
+						const T&			rvalue ) -> secondLevelProxy<T>
+			{
+				return secondLevelProxy<T>( this, value, rvalue );
+			}
+		};
+
+		// Non callable
+		template <typename T>
+		struct secondLevelProxy<T, false>
+		{
+			const firstLevelProxy* const			m_firstLevelProxy;
+			std::unordered_map< std::string, T >	m_caseValueMapping;
+			T										m_default;
+
+			secondLevelProxy(	const firstLevelProxy* const	firstLevelProxy,
+								const std::string&				value,
+								const T&						rvalue ) :
+				m_firstLevelProxy( firstLevelProxy )
+			{
+				m_caseValueMapping[ value ] = rvalue;
+			}
+
+			auto Case(	const std::string&	value, 
+						const T&			rvalue ) -> secondLevelProxy&
+			{
+				m_caseValueMapping[ value ] = rvalue;
 
 				return *this;
 			}
 
-			proxy& Default( const T& value )
+			auto Default( const T& rvalue ) -> secondLevelProxy&
 			{
-				m_default = value;
+				m_default = rvalue;
 
 				return *this;
 			}
 
-			T eval() const
+			auto Eval() -> T
 			{
-				if( m_caseValueMapping.count( m_str ) )
+				if( m_caseValueMapping.count( m_firstLevelProxy->m_str ) )
 				{
-					return m_caseValueMapping.at( m_str );
+					return m_caseValueMapping.at( m_firstLevelProxy->m_str );
 				}
 
 				return m_default;
 			}
 		};
-	}
 
-	template <typename T>
-	internal::proxy<T> Switch( const std::string& str )
-	{
-		return internal::proxy<T>( str );
-	}
-
-
-	template <typename T>
-	class has_callOperator
-	{
-	private:
-		template <typename U, U>
-		class check
-		{ };
-    
-		template <typename C, typename R>
-		static auto f(check<R (C::*)(), &C::operator()>*) -> char;
-
-		template <typename C, typename R>
-		static auto f(check<R (C::*)() const, &C::operator()>*) -> char;
-    
-		template <typename C, typename R>
-		static auto f(...) -> long;
-    
-	public:
-		static const bool value = (sizeof(f<T>(0)) == sizeof(char));
-	};
-
-	
-	class proxy2;
-
-	template <	typename T, 
-				bool isCallable	= has_callOperator<T>::value>
-	struct proxy3;
-
-	// Non callable
-	template <typename T>
-	struct proxy3<T, false>
-	{
-		const proxy2* const						m_proxy2;
-		std::unordered_map< std::string, T >	m_caseValueMapping;
-		T										m_default;
-
-		proxy3( const proxy2* const proxy2,
-				const std::string& value,
-				const T& rvalue ) :
-			m_proxy2( proxy2 )
-		{
-			m_caseValueMapping[ value ] = rvalue;
-		}
-
-		proxy3& Case(	const std::string& value,
-						const T& rvalue )
-		{
-			m_caseValueMapping[ value ] = rvalue;
-
-			return *this;
-		}
-
-		proxy3& Default( const T& rvalue )
-		{
-			m_default = rvalue;
-
-			return *this;
-		}
-
-		T Eval()
-		{
-			if( m_caseValueMapping.count( m_proxy2->m_str ) )
-			{
-				return m_caseValueMapping.at( m_proxy2->m_str );
-			}
-
-			return m_default;
-		}
-	};
-	
-	// Callable
-	template <typename T>
-	struct proxy3<T, true>
-	{
-		const proxy2* const						m_proxy2;
-		std::unordered_map< std::string, T >	m_caseValueMapping;
-		T										m_default;
-
-		proxy3( const proxy2* const proxy2,
-				const std::string& value,
-				const T& rvalue ) :
-			m_proxy2( proxy2 )
-		{
-			m_caseValueMapping[ value ] = rvalue;
-		}
-
-		proxy3& Case(	const std::string& value,
-						const T& rvalue )
-		{
-			m_caseValueMapping[ value ] = rvalue;
-
-			return *this;
-		}
-
-		proxy3& Default( const T& rvalue )
-		{
-			m_default = rvalue;
-
-			return *this;
-		}
-
-		decltype( std::declval<T>()() ) Eval()
-		{
-			if( m_caseValueMapping.count( m_proxy2->m_str ) )
-			{
-				return m_caseValueMapping.at( m_proxy2->m_str )();
-			}
-
-			return m_default();
-		}
-	};
-
-
-	class proxy2
-	{
-		const std::string& m_str;
-
-	public:
-		proxy2( const std::string& str ) :
-			m_str( str )
-		{
-
-		}
-
+		// Callable
 		template <typename T>
-		proxy3<T> Case(	const std::string& value,
-						const T& rvalue )
+		struct secondLevelProxy<T, true>
 		{
-			return proxy3<T>( this, value, rvalue );
-		}
-	};
+			/*
+			 *	Lambdas must be wrapped in a std::function since different identical lambdas are of different types
+			 *
+			 *	Example:
+			 *		auto a = []{};
+			 *		auto b = []{};
+			 *		
+			 *	The type of 'a' is not the same as the type of 'b'
+			 */
+			typedef decltype( std::declval<T>()() ) return_type;
+			typedef std::function< return_type() > caseValueCallType;
 
-	static proxy2 Switch2( const std::string& str )
+			const firstLevelProxy* const							m_firstLevelProxy;
+			std::unordered_map< std::string, caseValueCallType >	m_caseValueMapping;
+			caseValueCallType										m_default;
+
+			secondLevelProxy(	const firstLevelProxy*	const	firstLevelProxy,
+								const std::string&				value,
+								const caseValueCallType&		rvalue ) :
+				m_firstLevelProxy( firstLevelProxy )
+			{
+				m_caseValueMapping[ value ] = rvalue;
+			}
+
+			auto Case(	const std::string& value,
+						const caseValueCallType& rvalue ) -> secondLevelProxy&
+			{
+				m_caseValueMapping[ value ] = rvalue;
+
+				return *this;
+			}
+
+			auto Default( const caseValueCallType& rvalue ) -> secondLevelProxy&
+			{
+				m_default = rvalue;
+
+				return *this;
+			}
+
+			auto Eval() -> decltype( std::declval<T>()() )
+			{
+				if( m_caseValueMapping.count( m_firstLevelProxy->m_str ) )
+				{
+					return m_caseValueMapping.at( m_firstLevelProxy->m_str )();
+				}
+
+				return m_default();
+			}
+		};
+	}
+
+	static auto Switch( const std::string& str ) -> internal::firstLevelProxy
 	{
-		return proxy2( str );
+		return internal::firstLevelProxy( str );
 	}
 }
