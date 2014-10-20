@@ -66,16 +66,16 @@ enum RedirectionType
 class Process
 {
 private:
-	const std::string			m_process;
-	std::vector< std::string >	m_arguments;
+	const std::string					m_process;
+	mutable std::vector< std::string >	m_arguments;
 	
-	std::unordered_map< Channel, 
-						std::tuple< std::string, bool, bool > > m_redirects;
+	mutable std::unordered_map< Channel, 
+								std::tuple< std::string, bool, bool > > m_redirects;
 
 	template <typename T>
 	auto arg_internal(	const T& arg, 
 						std::true_type hasStdToString, 
-						std::true_type hasInsertionOperator ) -> Process&
+						std::true_type hasInsertionOperator ) const -> const Process&
 	{
 		m_arguments.push_back( std::to_string( arg ) );
 
@@ -85,7 +85,7 @@ private:
 	template <typename T>
 	auto arg_internal(	const T& arg, 
 						std::true_type	hasStdToString, 
-						std::false_type doesNotHaveInsertionOperator ) -> Process&
+						std::false_type doesNotHaveInsertionOperator ) const -> const Process&
 	{
 		m_arguments.push_back( std::to_string( arg ) );
 
@@ -95,7 +95,7 @@ private:
 	template <typename T>
 	auto arg_itnernal(	const T& arg, 
 						std::false_type doesNotHaveStdToString, 
-						std::true_type	hasInsertionOperator ) -> Process&
+						std::true_type	hasInsertionOperator ) const -> const Process&
 	{
 		std::stringstream ss;
 		std::string argStr;
@@ -111,7 +111,7 @@ private:
 	template <typename T>
 	auto arg_internal(	const T& arg, 
 						std::false_type, 
-						std::false_type ) -> Process&
+						std::false_type ) const -> const Process&
 	{
 		static_assert( false, "Input argument cannot be stringified !" );
 	}
@@ -119,11 +119,18 @@ private:
 public:
 	Process( const std::string& process );
 
-	auto arg( const std::string& arg )	-> Process&;
-	auto arg( const char* arg )			-> Process&;
+	template <typename ...Args>
+	Process( const std::string& process, Args&&... args ) :
+		m_process( process )
+	{
+		arg( args... );
+	}
+
+	auto arg( const std::string& arg )	const -> const Process&;
+	auto arg( const char* arg )			const -> const Process&;
 
 	template <typename T>
-	auto arg( const T& arg ) -> Process&
+	auto arg( const T& arg ) const -> const Process&
 	{
 		return arg_internal(arg,
 							std::integral_constant<bool, internal::metafunctions::has_stdToString<T>::value>::type(),
@@ -131,7 +138,7 @@ public:
 	}
 
 	template <typename T, typename ...Args>
-	auto arg( const T& first, Args&&... rest ) -> Process&
+	auto arg( const T& first, Args&&... rest ) const -> const Process&
 	{
 		arg(first);
 		arg(rest...);
@@ -139,8 +146,12 @@ public:
 		return *this;
 	}
 
-	auto redirect( const Channel& channel, const std::string& to, const RedirectionType& type = Default )	-> Process&;
-	auto redirect( const Channel& channel, const Channel& to )												-> Process&;
+	auto redirect( const Channel& channel, const std::string& to, const RedirectionType& type = Default )	const -> const Process&;
+	auto redirect( const Channel& channel, const Channel& to )												const -> const Process&;
 
 	auto run() const -> int;
+
+	static const Process Copy;
+	static const Process CopyFolder;
+	static const Process Remove;
 };

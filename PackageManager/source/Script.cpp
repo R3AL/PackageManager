@@ -260,14 +260,14 @@ auto Script::runCommand(const std::string& command,
 auto Script::runCommand(const std::string& command,
 						const std::vector<std::string>& arguments) const -> void
 {
-	auto scriptCommand = utils::Switch<ScriptCommand>(command)	.Case("print",	ScriptCommand::Print)
-																.Case("run",	ScriptCommand::Run)
-																.Case("copy",	ScriptCommand::Copy)
-																.Case("delete", ScriptCommand::Delete)
-																.Default(		ScriptCommand::Unknown)
-																.eval();
-
 	using namespace utils;
+
+	auto scriptCommand = Switch<ScriptCommand>(command)	.Case("print",	ScriptCommand::Print)
+														.Case("run",	ScriptCommand::Run)
+														.Case("copy",	ScriptCommand::Copy)
+														.Case("delete", ScriptCommand::Delete)
+														.Default(		ScriptCommand::Unknown)
+														.eval();
 
 	switch( scriptCommand )
 	{
@@ -295,22 +295,24 @@ auto Script::runCommand(const std::string& command,
 
 		case ScriptCommand::Copy:
 		{
-			/*
-			 *	/E - copies directories and subdirectories, including empty ones
-			 *	/I - assume destination is a folder if it does not exist
-			 */
-			/*
-			std::string cmd = "echo xcopy /E /I " + arguments[0] + " 2^>^> logs/" + m_library->name() + "_install.script.log > tmp.bat";
+			Process::Copy	.arg(arguments[0])
+							.redirect(	StdOutput, 
+										"logs/" + m_library->name() + "_install.script.log", 
+										Append)
+							.redirect(	StdError, 
+										StdOutput)
+							.run();
+		}break;
 
-			FormattedPrint::On(std::cout)	.app("Running: ")
-											.app( cmd )
-											.endl();
-
-			system( cmd.c_str() );
-			system( "tmp.bat" );
-			*/
-
-			//Process(
+		case ScriptCommand::CopyFolder:
+		{
+			Process::CopyFolder	.arg(arguments[0])
+								.redirect(	StdOutput, 
+											"logs/" + m_library->name() + "_install.script.log", 
+											Append)
+								.redirect(	StdError, 
+											StdOutput)
+								.run();
 		}break;
 
 		case ScriptCommand::Unknown:

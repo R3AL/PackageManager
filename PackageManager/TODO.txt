@@ -2,4 +2,5 @@
 - Add xml parser/reader/writer/etc
 - Read settings file in Global class
 - isFolder/isFile implementation for Path class (os dependent)
-- replace system class with cross platform magic
+- replace system calls with cross platform magic
+- validate scripts input parameters

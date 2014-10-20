@@ -22,6 +22,7 @@ enum class ScriptCommand
 {
 	Print,
 	Run,
+	CopyFolder,
 	Copy,
 	Delete,
 

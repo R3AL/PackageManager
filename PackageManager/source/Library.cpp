@@ -291,9 +291,9 @@ auto Library::install()	const -> bool
 {
 	using namespace utils;
 
-	if( download() )
+	//if( download() )
 	{
-		extract();
+		//extract();
 
 		FormattedPrint::On(std::cout)	.app("Installing ")
 										.color( White )
@@ -340,7 +340,7 @@ auto Library::install()	const -> bool
 
 		return true;
 	}
-	else
+	//else
 	{
 		return false;
 	}

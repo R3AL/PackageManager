@@ -10,21 +10,23 @@ Process::Process( const std::string& process ):
 
 }
 
-auto Process::arg( const std::string& arg ) -> Process&
+auto Process::arg( const std::string& arg ) const -> const Process&
 {
 	m_arguments.push_back( arg );
 
 	return *this;
 }
 
-auto Process::arg( const char* arg ) -> Process&
+auto Process::arg( const char* arg ) const -> const Process&
 {
 	m_arguments.push_back( arg );
 
 	return *this;
 }
 
-auto Process::redirect( const Channel& channel, const std::string& to, const RedirectionType& type ) -> Process&
+auto Process::redirect( const Channel& channel, 
+						const std::string& to, 
+						const RedirectionType& type ) const -> const Process&
 {
 	auto& redirectChannel = m_redirects[ channel ];
 
@@ -35,7 +37,8 @@ auto Process::redirect( const Channel& channel, const std::string& to, const Red
 	return *this;	
 }
 
-auto Process::redirect( const Channel& channel, const Channel& to ) -> Process&
+auto Process::redirect( const Channel& channel, 
+						const Channel& to ) const -> const Process&
 {
 	auto& redirectChannel = m_redirects[ channel ];
 
@@ -100,6 +103,9 @@ auto Process::run() const -> int
 		}
 	}
 
+	m_arguments.clear();
+	m_redirects.clear();
+
 	auto proc = popen( command.c_str(), "r" );
 
 	if( proc == null )
@@ -112,3 +118,32 @@ auto Process::run() const -> int
 
 #undef popen
 #undef pclose
+
+const Process Process::Copy = 
+	#ifdef _WIN32
+		/*	
+		*	/Y - don't prompt for overwrite
+		*/
+		Process("copy", "/Y");
+	#else
+		Process("cp", "-r");
+	#endif
+
+const Process Process::CopyFolder = 
+	#ifdef _WIN32
+		/*
+		*	/E - copies directories and subdirectories, including empty ones
+		*	/I - assume destination is a folder if it does not exist
+		*	/Y - don't prompt for overwrite
+		*/
+		Process("xcopy", "/E", "/I", "/Y");
+	#else
+		Process::Copy;
+	#endif
+
+const Process Process::Remove = 
+	#ifdef _WIN32
+		Process("del");
+	#else
+		Process("rm", "-rf");
+	#endif
