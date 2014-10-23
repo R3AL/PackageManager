@@ -2,11 +2,11 @@
 
 #include <chrono>
 #include <functional>
-#include <type_traits>
-#include <future>
 #include <atomic>
+#include <thread>
 
 #include "utils/FormattedPrint.hpp"
+#include "utils/Metafunctions.hpp"
 
 namespace utils
 {
@@ -77,7 +77,7 @@ namespace utils
 			 *	This also returns the value returned by the given function/functor/lambda
 			 */
 			template <	typename T, 
-						typename R = decltype( std::declval<T>()() ) >
+						typename R = metafunctions::returnTypeOfCall<T>::type >
 			static auto Task(	const T& task,
 								const std::chrono::nanoseconds& updateInterval = std::chrono::milliseconds(100) ) -> R
 			{

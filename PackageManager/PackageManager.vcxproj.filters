@@ -90,11 +90,11 @@
     <ClCompile Include="source\utils\Process.cpp">
       <Filter>Source Files\source\utils</Filter>
     </ClCompile>
+    <ClCompile Include="source\utils\Filesystem.cpp">
+      <Filter>Source Files\source\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Convert.hpp">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
     <ClInclude Include="include\Path.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
@@ -156,6 +156,12 @@
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="include\utils\Process.hpp">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\Metafunctions.hpp">
+      <Filter>Header Files\include\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\Filesystem.hpp">
       <Filter>Header Files\include\utils</Filter>
     </ClInclude>
   </ItemGroup>

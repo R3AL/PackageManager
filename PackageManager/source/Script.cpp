@@ -270,7 +270,7 @@ auto Script::runCommand(const std::string& command,
 
     switch( scriptCommand )
     {
-    case ScriptCommand::Print:
+		case ScriptCommand::Print:
         {
             FormattedPrint::On(std::cout)	.color( Purple )
 											.app( "Script: " )
@@ -280,7 +280,7 @@ auto Script::runCommand(const std::string& command,
         }
         break;
 
-    case ScriptCommand::Run:
+		case ScriptCommand::Run:
         {
             Process(arguments[0])	.arg( std::accumulate(	arguments.begin() + 1,
 															arguments.end(),
@@ -294,7 +294,7 @@ auto Script::runCommand(const std::string& command,
         }
         break;
 
-    case ScriptCommand::Copy:
+		case ScriptCommand::Copy:
         {
             Process::Copy	.arg(arguments[0])
 							.redirect(	StdOutput,
@@ -306,7 +306,7 @@ auto Script::runCommand(const std::string& command,
         }
         break;
 
-    case ScriptCommand::CopyFolder:
+		case ScriptCommand::CopyFolder:
         {
             Process::CopyFolder	.arg(arguments[0])
 								.redirect(	StdOutput,
@@ -318,7 +318,7 @@ auto Script::runCommand(const std::string& command,
         }
         break;
 
-    case ScriptCommand::Unknown:
+		case ScriptCommand::Unknown:
         {
             FormattedPrint::On(std::cout)	.app( "Unknown command [")
                                             .color( Yellow )
@@ -335,14 +335,15 @@ auto Script::run() const -> void
 {
     if( m_valid )
     {
-        const auto& Section = section( Section::PreInstall );
+		for( const auto& Section : m_sections )
+		{
+			for( const auto& commandValuePair : Section.second )
+			{
+				const auto& command = commandValuePair.first;
+				const auto& value	= commandValuePair.second;
 
-        for( const auto& commandValuePair : Section )
-        {
-            const auto& command = commandValuePair.first;
-            const auto& value	= commandValuePair.second;
-
-            runCommand( command, value );
-        }
+				runCommand( command, value );
+			}
+		}
     }
 }

@@ -3,12 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "Convert.hpp"
-
 class Path
 {
-	friend converter<Path>;
-
 private:
 	std::vector< std::string > m_folders;
 

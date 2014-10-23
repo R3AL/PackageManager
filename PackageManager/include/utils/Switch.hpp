@@ -2,32 +2,12 @@
 
 #include <string>
 #include <unordered_map>
-#include <type_traits>
-#include <functional>
+#include <functional> // std::function
+
+#include "Metafunctions.hpp"
 
 namespace utils
 {
-	namespace metafunctions
-	{
-		template <typename T>
-		class has_callOperator
-		{
-		private:
-			template <typename U, U>
-			class check
-			{ };
-
-			template <typename C>
-			static auto f(check<decltype(C::operator()), &C::operator()>*) -> char;
-
-			template <typename C>
-			static auto f(...) -> long;
-
-		public:
-			static const bool value = (sizeof(f<T>(0)) == sizeof(char));
-		};
-	}
-
 	namespace internal
 	{
 		class firstLevelProxy
@@ -108,37 +88,37 @@ namespace utils
 			 *		
 			 *	The type of 'a' is not the same as the type of 'b'
 			 */
-			typedef decltype( std::declval<T>()() ) return_type;
-			typedef std::function< return_type() > caseValueCallType;
+			typedef typename metafunctions::returnTypeOfCall<T>::type	return_type;
+			typedef std::function< return_type() >						caseValueCallableType;
 
-			const firstLevelProxy* const							m_firstLevelProxy;
-			std::unordered_map< std::string, caseValueCallType >	m_caseValueMapping;
-			caseValueCallType										m_default;
+			const firstLevelProxy* const								m_firstLevelProxy;
+			std::unordered_map< std::string, caseValueCallableType >	m_caseValueMapping;
+			caseValueCallableType										m_default;
 
 			secondLevelProxy(	const firstLevelProxy*	const	firstLevelProxy,
 								const std::string&				value,
-								const caseValueCallType&		rvalue ) :
+								const caseValueCallableType&	rvalue ) :
 				m_firstLevelProxy( firstLevelProxy )
 			{
 				m_caseValueMapping[ value ] = rvalue;
 			}
 
 			auto Case(	const std::string& value,
-						const caseValueCallType& rvalue ) -> secondLevelProxy&
+						const caseValueCallableType& rvalue ) -> secondLevelProxy&
 			{
 				m_caseValueMapping[ value ] = rvalue;
 
 				return *this;
 			}
 
-			auto Default( const caseValueCallType& rvalue ) -> secondLevelProxy&
+			auto Default( const caseValueCallableType& rvalue ) -> secondLevelProxy&
 			{
 				m_default = rvalue;
 
 				return *this;
 			}
 
-			auto Eval() -> decltype( std::declval<T>()() )
+			auto Eval() -> return_type
 			{
 				if( m_caseValueMapping.count( m_firstLevelProxy->m_str ) )
 				{

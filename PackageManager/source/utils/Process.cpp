@@ -42,7 +42,19 @@ auto Process::redirect( const Channel& channel,
 {
 	auto& redirectChannel = m_redirects[ channel ];
 
-	std::get<0>( redirectChannel ) = std::to_string( static_cast<int>(to) );
+	if( to != Null )
+	{
+		std::get<0>( redirectChannel ) = std::to_string( static_cast<int>(to) );
+	}
+	else
+	{
+		#ifdef _WIN32
+			std::get<0>( redirectChannel ) = "nul";
+		#else
+			std::get<0>( redirectChannel ) = "/dev/null";
+		#endif
+	}
+
 	std::get<1>( redirectChannel ) = false;
 	std::get<2>( redirectChannel ) = true;
 

@@ -8,12 +8,13 @@
 #preinstall
 {
 	print: hi,
-	run: ipconfig
+	run: 
 }
 
 #install
 {
-	
+	print: hi,
+	run: 
 }
 
 #postinstall

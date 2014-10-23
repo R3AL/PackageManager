@@ -84,6 +84,7 @@
     <ClCompile Include="source\Settings.cpp" />
     <ClCompile Include="source\SettingsManager.cpp" />
     <ClCompile Include="source\utils\FileDownloader.cpp" />
+    <ClCompile Include="source\utils\Filesystem.cpp" />
     <ClCompile Include="source\utils\FormattedPrint.cpp" />
     <ClCompile Include="source\utils\Process.cpp" />
     <ClCompile Include="source\utils\Strings.cpp" />
@@ -95,7 +96,6 @@
     <ClInclude Include="include\CommandHelp.hpp" />
     <ClInclude Include="include\CommandInstall.hpp" />
     <ClInclude Include="include\CommandUpdate.hpp" />
-    <ClInclude Include="include\Convert.hpp" />
     <ClInclude Include="include\ICommand.hpp" />
     <ClInclude Include="include\Library.hpp" />
     <ClInclude Include="include\LibraryManager.hpp" />
@@ -106,7 +106,9 @@
     <ClInclude Include="include\Settings.hpp" />
     <ClInclude Include="include\SettingsManager.hpp" />
     <ClInclude Include="include\utils\FileDownloader.hpp" />
+    <ClInclude Include="include\utils\Filesystem.hpp" />
     <ClInclude Include="include\utils\FormattedPrint.hpp" />
+    <ClInclude Include="include\utils\Metafunctions.hpp" />
     <ClInclude Include="include\utils\Process.hpp" />
     <ClInclude Include="include\utils\Strings.hpp" />
     <ClInclude Include="include\utils\ProgressIndicator.hpp" />

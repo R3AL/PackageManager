@@ -2,59 +2,17 @@
 
 #include <string>
 #include <vector>
-#include <type_traits>
 #include <sstream>
 #include <unordered_map>
 #include <tuple>
 
-namespace internal
-{
-    namespace metafunctions
-    {
-        using std::to_string;
-
-        template <typename T>
-        void to_string(T);
-
-        template <typename T>
-        struct has_stdToString
-        {
-            static const bool value = ! std::is_same< void, decltype( to_string( std::declval<T>() ) )>::value;
-        };
-
-
-        typedef char no;
-        typedef char yes[2];
-
-        struct any_t
-        {
-            template <typename T>
-            any_t( T const& );
-        };
-
-        auto operator<<(const std::ostream&,
-                        const any_t& )	-> no;
-
-        auto test( std::ostream& )		-> yes&;
-        auto test( no )					-> no;
-
-        template<typename T>
-        struct has_insertion_operator
-        {
-        private:
-            static std::ostream &s;
-            static T const &t;
-
-        public:
-            static bool const value = sizeof( test(s << t) ) == sizeof( yes );
-        };
-    }
-}
+#include "utils/Metafunctions.hpp"
 
 enum Channel
 {
     StdOutput = 1,
-    StdError
+    StdError,
+	Null
 };
 
 enum RedirectionType
@@ -133,8 +91,8 @@ public:
     auto arg( const T& arg ) const -> const Process&
     {
         return arg_internal(arg,
-                            std::integral_constant<bool, internal::metafunctions::has_stdToString<T>::value>::type(),
-                            std::integral_constant<bool, internal::metafunctions::has_insertion_operator<T>::value>::type() );
+                            std::integral_constant<bool, metafunctions::has_stdToString<T>::value>::type(),
+                            std::integral_constant<bool, metafunctions::has_insertionOperator<T>::value>::type() );
     }
 
     template <typename T, typename ...Args>

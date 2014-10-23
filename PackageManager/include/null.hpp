@@ -1,30 +1,9 @@
 #pragma once
 
-#include <type_traits>
+#include "utils/Metafunctions.hpp"
 
 namespace internal
 {
-	namespace metafunctions
-	{
-		template <typename T>
-		class has_getNull
-		{
-		private:
-			template <typename U, U>
-			class check
-			{ };
-    
-			template <typename C>
-			static auto f(check<const C& (*)(), &C::getNull>*) -> char;
-    
-			template <typename C>
-			static auto f(...) -> long;
-    
-		public:
-			static const bool value = (sizeof(f<T>(0)) == sizeof(char));
-		};
-	}
-
 	template <	typename T,
 				bool isPointer	= std::is_pointer<T>::value,
 				bool hasGetNull = std::is_class<T>::value && metafunctions::has_getNull<T>::value>
@@ -62,7 +41,6 @@ namespace internal
 	class nulltype
 	{
 	public:
-
 		template <typename T>
 		operator T() const
 		{

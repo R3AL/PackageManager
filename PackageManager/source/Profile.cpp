@@ -5,7 +5,6 @@
 #include "utils/Switch.hpp"
 
 #include "SettingsManager.hpp"
-#include "Convert.hpp"
 #include "null.hpp"
 
 Profile::Profile( const std::string& profileName ):
